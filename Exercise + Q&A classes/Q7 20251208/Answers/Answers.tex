@@ -1,0 +1,1114 @@
+\documentclass[UTF8,8pt,a4paper]{article}
+\usepackage{ctex}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bookmark}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{hyperref}
+
+\geometry{left=1.8cm,right=1.8cm,top=1.9cm,bottom=1.9cm}
+\makeatletter
+\def\@fnsymbol#1{\ensuremath{%
+  \ifcase#1\or % 0
+    \dagger\or % 1 - 改为 dagger
+    *\or       % 2 - 原来的 dagger 变成 asterisk
+    \ddotagger\or % 3
+    \S\or      % 4
+    \P\or      % 5
+    \|\or      % 6 (DOUBLE VERTICAL LINE)
+    \or      % 7
+    \dagger\dagger\or % 8
+    \ddotagger\ddotagger % 9
+  \else
+    \@ctrerr
+  \fi
+}}
+\makeatother
+
+\title{\huge\textbf{流体力学习题解答}}
+\author{TA：疏宇\thanks{School of Gifted Young, USTC, email:\url{shuyu2023@mail.ustc.edu.cn}}\quad{}师驰昊\thanks{School of Gifted Young, USTC, email:\url{1984019655@qq.com}}}
+\date{November 30$^{\text{th}}$, 2025}
+
+\begin{document}
+\maketitle
+
+\section*{I 简答题}
+简答题没有标准答案, 以下仅提供思路分析.
+\newline
+
+
+\textbf{1 一根木棒总是水平地浮在水面, 为什么不能竖直地浮在水面?}
+
+一根木棒总是水平地浮在水面上, 而不能稳定地竖直浮在水面上, 这主要是由浮力、重力、力矩平衡以及浮态稳定性的原理决定的.
+
+\begin{itemize}
+    \item \textbf{重力 ($\vec{G}$):} 作用在木棒的质心 $C_G$. 对于均质木棒, $C_G$ 位于其几何中心.
+    \item \textbf{浮力 ($\vec{F}_b$):} 作用在木棒浸入液体部分的几何中心, 称为浮心 $C_B$. 浮力的大小等于排开液体的重量, 即 $F_b = \rho_f g V_{sub}$, 其中 $\rho_f$ 是液体密度, $g$ 是重力加速度, $V_{sub}$ 是浸入体积.
+\end{itemize}
+
+要使物体稳定浮动, 需满足两个条件:
+\begin{enumerate}
+    \item 竖直方向力平衡: $F_b = G = \rho_b g V_{total}$, 其中 $\rho_b$ 是木棒密度, $V_{total}$ 是木棒总体积.
+    \item 力矩平衡: 浮心 $C_B$ 和质心 $C_G$ 必须位于同一竖直线上.
+\end{enumerate}
+
+更重要的是, 浮态的稳定性取决于物体受到微小倾斜扰动后, 浮力与重力能否产生一个使物体恢复到初始平衡位置的恢复力矩. 这涉及到稳心 (Metacenter, M)的概念. 当稳心 $M$ 位于质心 $C_G$ 之上时 ($GM > 0$), 浮态是稳定的; 反之, 则不稳定.
+假设木棒长为 $L$, 半径为 $R$, 密度为 $\rho_b$, 液体密度为 $\rho_f$.
+当木棒水平浮动时, 其质心 $C_G$ 和浮心 $C_B$ 都在木棒的中轴线上.
+设浸入水中的深度为 $h_0$.
+\begin{equation}
+    F_b = G \implies \rho_f g (L \cdot 2R \cdot h_0) \approx \rho_b g (L \cdot \pi R^2)
+\end{equation}
+
+这里简化地将横截面视为矩形以便分析 $h_0$, 但对于圆柱形木棒, $V_{sub}$ 对应浸入扇形的面积乘以 $L$. 浮心 $C_B$ 位于浸入部分的几何中心, 通常会低于质心 $C_G$.
+当木棒受到微小角度 $\Delta\phi$ 的横向倾斜时 (绕长轴转动):
+浸入水中的横截面形状会改变, 导致浮心 $C_B$ 向倾斜方向移动到 $C_B'$.
+浮心横向移动的距离 $d_{CB}$ (相对于初始中线) 约为:
+\begin{equation}
+    d_{CB} = \frac{I_x}{V_{sub}} \sin(\Delta\phi)
+\end{equation}
+
+其中 $I_x$ 是水线面绕倾斜轴的惯性矩. 对于水平浮动的木棒, $I_x$ 相对较大 (取决于水线面的宽度).
+稳心 $M$ 的位置可由 $BM = I_x / V_{sub}$ 决定, 其中 $BM$ 是浮心到稳心的距离.
+稳心高 $GM = BM - C_GB$. 对于水平浮动的木棒, $I_x$ (取决于水线面宽度) 较大, 使得 $BM$ 较大, 且 $C_GB$ (质心到浮心的距离) 通常为正值, 从而 $GM > 0$. 这会产生一个恢复力矩:
+\begin{equation}
+    \tau_{restore} = G \cdot GM \sin(\Delta\phi)
+\end{equation}
+
+由于 $GM>0$, 恢复力矩总是将木棒拉回水平位置, 因此水平浮动是稳定的.
+当木棒尝试竖直浮动时, 设浸入深度为 $H_s$.
+此时质心 $C_G$ 位于距木棒底端 $L/2$ 处.
+浮心 $C_B$ 位于浸入水下部分的中点, 即距木棒底端 $H_s/2$ 处.
+根据浮力等于重力:
+\begin{equation}
+    \rho_f g (\pi R^2 H_s) = \rho_b g (\pi R^2 L) \implies H_s = L \frac{\rho_b}{\rho_f}
+\end{equation}
+
+通常情况下 $\rho_b < \rho_f$, 所以 $H_s < L$.
+此时, 质心 $C_G$ 距水线的高度为 $L/2 - H_s$. 浮心 $C_B$ 距水线的高度为 $-H_s/2$.
+质心 $C_G$ 到浮心 $C_B$ 的距离为 $C_G B = L/2 - H_s/2 = (L-H_s)/2$.
+当木棒受到微小角度 $\Delta\phi$ 的倾斜时 (绕其横轴转动):
+此时的浮心 $C_B$ 移动非常小, 因为水线面是一个小圆形, 它的惯性矩 $I_y$ (绕垂直于倾斜方向的轴) 远小于水平浮动时的 $I_x$.
+对于一个圆形水线面, 其惯性矩 $I_y = \pi R^4 / 4$.
+浮心到稳心的距离 $BM = I_y / V_{sub} = (\pi R^4 / 4) / (\pi R^2 H_s) = R^2 / (4H_s)$.
+稳心高 $GM = BM - C_G B = \frac{R^2}{4H_s} - \frac{L-H_s}{2}$.
+
+将 $H_s = L \rho_b / \rho_f$ 代入:
+\begin{equation}
+    GM = \frac{R^2}{4L(\rho_b/\rho_f)} - \frac{L(1-\rho_b/\rho_f)}{2} = \frac{\rho_f R^2}{4L\rho_b} - \frac{L}{2}\left(1-\frac{\rho_b}{\rho_f}\right)
+\end{equation}
+
+对于典型的木棒, $L$ 远大于 $R$ (即木棒是细长的). 例如, 设 $L=1\text{m}$, $R=0.02\text{m}$, $\rho_b/\rho_f = 0.5$.
+$H_s = 0.5\text{m}$.
+$GM = \frac{0.02^2}{4 \times 0.5} - \frac{1-0.5}{2} = \frac{0.0004}{2} - \frac{0.5}{2} = 0.0002 - 0.25 = -0.2498\text{m}$.
+
+由于 $GM < 0$, 稳心 $M$ 位于质心 $C_G$ 之下, 浮态是不稳定的. 任何微小的倾斜都会产生一个倾覆力矩, 使木棒进一步倾斜, 直到它翻转到水平位置.
+
+综上所述, 木棒不能竖直稳定地浮在水面上, 是因为其细长的几何形状导致在竖直浮动时稳心高 $GM$ 通常为负值, 即缺乏足够的横向浮态稳定性. 任何轻微的扰动都会导致浮力与重力形成一个倾覆力矩, 使其继续倾斜, 最终翻转到能提供稳定恢复力矩的水平位置. 在水平位置下, 稳心高 $GM$ 为正, 浮态是稳定的.
+\newline
+
+
+\textbf{2 当两船在行驶中比较靠近时, 就容易相撞, 试说明之.}
+
+当两船在行驶中比较靠近时容易相撞, 这一现象可以用伯努利原理 (Bernoulli's Principle) 和流体动力学来解释.
+
+伯努利原理指出, 在理想流体 (不可压缩、无黏性) 的稳定流中, 沿同一流线, 流体的压强与流速之间存在以下关系:
+\begin{equation}
+    p + \frac{1}{2}\rho v^2 + \rho g h = \text{常数}
+\end{equation}
+
+其中 $p$ 是流体的静态压强, $\rho$ 是流体密度, $v$ 是流体流速, $g$ 是重力加速度, $h$ 是流体所在的高度.
+对于水平方向的流体 (忽略高度变化 $\rho g h$), 伯努利原理简化为:
+\begin{equation}
+    p + \frac{1}{2}\rho v^2 = \text{常数}
+\end{equation}
+这意味着在流速大的地方, 压强小; 在流速小的地方, 压强大.
+
+设想两艘船在平行或近似平行的航向上行驶, 它们之间有一段狭窄的水域.
+\begin{itemize}
+    \item \textbf{船只外侧的水流:} 在船只的外侧, 水流相对开阔, 流速变化不大, 压强接近于周围环境的静态水压 $p_0$.
+    \item \textbf{船只内侧 (两船之间) 的水流:} 当两船靠近时, 它们之间的水域变得狭窄. 为了维持水流的连续性 (质量守恒), 穿过两船之间狭窄通道的水流速度必须增加. 根据连续性方程, 对于不可压缩流体, $A_1 v_1 = A_2 v_2$. 当水流通道截面积 $A_2$ 减小 (两船靠近), 水流速度 $v_2$ 必须增大.
+\end{itemize}
+
+根据伯努利原理 ($p + \frac{1}{2}\rho v^2 = \text{常数}$):
+\begin{enumerate}
+    \item 在两船之间, 水流速度 $v_{in}$ 增大, 导致该区域的水压 $p_{in}$ 减小.
+    \item 在船只外侧, 水流速度 $v_{out}$ 变化不大 (相对 $v_{in}$ 较小), 导致该区域的水压 $p_{out}$ 相对较高.
+\end{enumerate}
+因此, $p_{out} > p_{in}$.
+
+由于船只外侧的压强高于内侧的压强, 船只会受到一个从外向内的净压力差. 这个压力差在船的两侧产生了一个吸力, 将两艘船相互吸引.
+
+假设两船之间水流速度增加量为 $\Delta v$. 则两船之间压强下降约为 $\Delta p \approx \frac{1}{2}\rho (v_{in}^2 - v_{out}^2)$.
+如果 $v_{out}$ 接近 $0$ (相对运动较慢), 那么压强下降大约为 $\frac{1}{2}\rho v_{in}^2$.
+这个压强差作用在船体侧面浸入水中的面积上, 产生一个合力 $F = \Delta p \cdot A_{side}$, 其中 $A_{side}$ 是船体侧面受压面积.
+这个力会将两艘船向内推, 从而增加相撞的风险.
+
+除了伯努利原理, 还有一些其他因素也会加剧这种效应:
+\begin{itemize}
+    \item \textbf{船只尺寸与航速:} 大型船只或高速行驶的船只, 其周围水流变化更剧烈, 产生的伯努利吸力也越大.
+    \item \textbf{航道宽度:} 在狭窄的航道或港口中, 这种效应更为明显, 因为水流通道的收缩更为显著.
+    \item \textbf{船舵效应:} 船在行驶时, 船舵的转动也会影响船体周围的水流, 从而产生额外的力和力矩.
+    \item \textbf{船尾波:} 船尾产生的波浪和紊流也会影响周围水体的运动, 进一步复杂化两船之间的相互作用.
+    \item \textbf{驾驶员反应时间:} 船舶具有较大的惯性, 即使发现有吸力作用, 改变航向或减速也需要一定时间, 这使得避险难度增加.
+\end{itemize}
+
+当两船在行驶中比较靠近时, 由于伯努利原理, 它们之间狭窄水域的水流速度会加快, 导致压强降低. 而船只外侧的水流速度相对较慢, 压强较高. 这种内外压强差产生了指向船只内部的净吸力, 使得两船相互吸引, 从而容易发生相撞事故. 因此, 航海规则通常要求船只在行驶中保持足够的安全距离.
+\newline
+
+
+\textbf{3 在如图的演示实验, 为何球能比较稳定地悬浮在空中?}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.25\textwidth]{Fig/1.3.png}
+  \caption{图1.3}
+\end{figure}
+
+如图所示的演示实验中, 球能比较稳定地悬浮在空中, 这是一个经典的伯努利原理 (Bernoulli's Principle) 和科恩达效应 (Coandă Effect) 的应用.
+
+当吹风机向上吹出高速气流时, 球体被气流托起. 球体之所以能稳定在气流中, 关键在于伯努利原理.
+\begin{enumerate}
+    \item \textbf{气流内外的压强差:} 高速气流从吹风机喷口喷出, 并在球体周围形成一个高速运动的气柱. 在这个高速气柱内部, 根据伯努利原理 ($p + \frac{1}{2}\rho v^2 = \text{常数}$), 气流速度 $v$ 很大, 导致气柱内部的静态压强 $p_{in}$ 较低. 而在气柱外部, 空气相对静止, 压强 $p_{out}$ 较高, 接近大气压强.
+    \item \textbf{提供向心力:} 这种内外压强差产生了指向气流中心的净力. 假设球体由于某种扰动稍微偏离了气流中心, 例如向左移动. 此时, 球体的左侧（气流外部）受到的压强 $p_{out}$ 较高, 而球体的右侧（气流内部）受到的压强 $p_{in}$ 较低. 这个压强差会在球体上产生一个指向气流中心的推力, 将球体推回气流的中心.
+\end{enumerate}
+
+考虑球体偏离气流中心一个距离 $\delta r$.
+如果球体部分位于高速气流中, 部分位于静止空气中, 那么它两侧会存在一个压强差 $\Delta p = p_{out} - p_{in}$.
+这个压强差可以近似为 $\Delta p \approx \frac{1}{2}\rho_{air} (v_{in}^2 - v_{out}^2)$.
+当球体偏离时, 偏离侧的压强增加 (更接近 $p_{out}$), 而另一侧压强减少 (更接近 $p_{in}$). 这个压强差作用在球体表面, 产生一个恢复力 $F_{restore}$ 指向气流中心.
+$F_{restore} \propto \Delta p \cdot A_{effective}$, 其中 $A_{effective}$ 是压强差作用的有效面积.
+这个恢复力使得球体在气流中保持横向稳定.
+
+科恩达效应是指流体（液体或气体）在离开物体表面时, 有沿凸出的物体表面流动的倾向. 在这个实验中：
+\begin{enumerate}
+    \item \textbf{气流的“粘附”:} 即使球体稍微偏离了气流的直线路径, 气流也会倾向于沿着球体的表面流动, 而不是简单地从球体旁边掠过. 气流会“粘附”在球体表面, 形成一个弯曲的流线.
+    \item \textbf{产生反作用力:} 当气流沿着球体表面弯曲时, 根据牛顿第三定律, 球体对气流施加一个力使其弯曲, 同时气流也对球体施加一个大小相等、方向相反的反作用力. 这个反作用力会有一个分量指向气流的中心. 这有助于将球体“吸附”在气流中.
+\end{enumerate}
+
+当气流以速度 $v$ 沿半径为 $r_{curve}$ 的球体表面弯曲时, 为了维持这种弯曲, 气流内部必须存在一个指向曲率中心的压强梯度. 这同样导致了气流内侧（靠近球体表面）的压强低于外侧. 这种压强差产生的合力将球体拉向气流.
+科恩达效应提供的力也是一种恢复力, 它协同伯努利原理, 增强了球体在气流中的稳定性.
+
+除了横向稳定性, 球体还需要在竖直方向上达到平衡.
+\begin{enumerate}
+    \item \textbf{重力:} 球体受到向下的重力 $G = m g$.
+    \item \textbf{气流推力:} 吹风机喷出的高速气流对球体产生向上的动量交换推力. 这个推力的大小与气流通过球体下方时的速度、流量以及球体对气流的阻碍作用有关.
+\item \textbf{阻力:} 球体在气流中运动时, 还会受到气流的阻力 $F_D = \frac{1}{2} C_D \rho_{air} A v^2$.
+\end{enumerate}
+
+当球体稳定悬浮时, 向上的气流推力 (减去向下的阻力) 与向下的重力相平衡:
+\begin{equation}
+    F_{lift} \approx G = mg
+\end{equation}
+
+通过调节吹风机的功率, 可以改变气流速度和推力, 从而使球体在某个高度上达到竖直方向的平衡.
+
+球体能比较稳定地悬浮在空中, 是伯努利原理和科恩达效应共同作用的结果. 伯努利原理通过内外压强差提供横向恢复力, 将球体推向气流中心; 科恩达效应则使气流“粘附”在球体表面, 产生额外的吸附力, 进一步增强横向稳定性. 同时, 向上的气流推力与向下的重力相平衡, 使得球体在竖直方向上也能保持稳定.
+\newline
+
+
+\textbf{4 为什么静止流体中应力的特征在运动的理想流体中也适用? 对运动的粘滞流体适用吗? 试说明之.}
+
+这个问题涉及到流体应力的基本性质以及理想流体与粘滞流体的区别.
+
+静止流体中的应力具有以下特征:
+\begin{enumerate}
+    \item \textbf{只有正应力, 没有剪应力:} 在静止流体中, 任意一点通过任意截面上的力都垂直于该截面. 这意味着流体内部不存在切向力, 即剪应力为零.
+    \item \textbf{各向同性:} 任意一点的压强 (即正应力) 在各个方向上都相等. 也就是说, 通过该点任意方向的微小截面上的压强大小都相同, 与截面的方位无关. 这就是帕斯卡定律的体现.
+\end{enumerate}
+
+数学上, 静止流体中的应力张量 (Stress Tensor) 可以表示为:
+\begin{equation}
+    \sigma_{ij} = -p \delta_{ij} = \begin{pmatrix}
+        -p & 0 & 0 \\
+        0 & -p & 0 \\
+        0 & 0 & -p
+    \end{pmatrix}
+\end{equation}
+其中 $p$ 是静水压强, $\delta_{ij}$ 是克罗内克 Delta 符号.
+
+运动的理想流体中, 静止流体的应力特征仍然适用.
+理想流体定义为不可压缩、无黏性的流体. 这里的关键在于“无黏性”.
+\begin{enumerate}
+    \item \textbf{剪应力为零:} 流体的黏性是产生剪应力的根本原因. 黏性力是流体在相对运动时, 由于分子间相互作用或动量传递而产生的内部摩擦力. 由于理想流体是无黏性的 ($\mu=0$), 因此即使流体内部存在相对运动 (即速度梯度 $\nabla\vec{v} \neq 0$), 也不会产生剪应力. 所以, 运动的理想流体中, 剪应力仍然为零.
+    \item \textbf{各向同性压强:} 在理想流体中, 压强仍然是各向同性的. 这是因为压强反映的是流体分子的无序热运动对界面产生的平均法向力, 与宏观运动方向无关. 即使有宏观运动, 只要没有黏性引起的内部摩擦, 流体内部的各向同性压强性质依然保持.
+\end{enumerate}
+
+因此, 运动的理想流体中的应力张量与静止流体中的应力张量形式相同:
+\begin{equation}
+    \sigma_{ij} = -p \delta_{ij}
+\end{equation}
+
+这里的 $p$ 是流体的热力学压强 (或称为静态压强), 它是位置和时间函数, 但仍是各向同性的.
+
+运动的粘滞流体中, 静止流体的应力特征不适用.
+粘滞流体 (Viscous Fluid) 是具有黏性的流体 ($\mu \neq 0$). 黏性流体在运动时会产生剪应力.
+\begin{enumerate}
+    \item \textbf{存在剪应力:} 当粘滞流体内部存在速度梯度 ($\nabla\vec{v} \neq 0$) 时, 相邻流体层之间会产生切向摩擦力, 即剪应力. 剪应力的大小与流体的黏性系数和速度梯度成正比. 例如, 对于牛顿流体, 剪应力 $\tau_{xy}$ 与剪切速率 $\frac{\partial v_x}{\partial y}$ 成正比:
+    \begin{equation}
+        \tau_{xy} = \mu \frac{\partial v_x}{\partial y}
+    \end{equation}
+    其中 $\mu$ 是动力黏度.
+    \item \textbf{压强可能不再是严格各向同性 (广义压强):} 虽然热力学压强 $p$ 在粘滞流体中仍可被定义为各向同性的, 但由于剪应力的存在, 任意截面上的总法向应力 (正应力) 可能不再是唯一的压强值, 并且与截面方向相关. 在某些情况下, 为了简化描述, 会引入一个广义压强 (Generalized Pressure) 或平均压强, 它等于三个正应力的平均值:
+    \begin{equation}
+        P = -\frac{1}{3}(\sigma_{xx} + \sigma_{yy} + \sigma_{zz})
+    \end{equation}
+    但在存在剪应力的情况下, 整个应力张量就不再是对角矩阵, 也不再是 $-p\delta_{ij}$ 的简单形式.
+\end{enumerate}
+
+对于牛顿流体, 运动时的应力张量通常表示为 Navier-Stokes 形式:
+\begin{equation}
+    \sigma_{ij} = -p\delta_{ij} + \mu \left( \frac{\partial v_i}{\partial x_j} + \frac{\partial v_j}{\partial x_i} - \frac{2}{3}\frac{\partial v_k}{\partial x_k}\delta_{ij} \right) + \lambda \frac{\partial v_k}{\partial x_k}\delta_{ij}
+\end{equation}
+其中 $\mu$ 是动力黏度, $\lambda$ 是第二黏度系数 (通常在不可压缩流体中为零).
+
+很明显, 这个表达式比静止流体或理想流体的应力张量复杂得多, 它包含了与速度梯度相关的剪应力项.
+
+\begin{itemize}
+    \item \textbf{静止流体和运动的理想流体:} 这两种情况下, 流体内部只有各向同性的正应力 (压强), 剪应力为零. 这是因为理想流体没有黏性, 即使有相对运动也不会产生剪切作用.
+    \item \textbf{运动的粘滞流体:} 在运动的粘滞流体中, 由于黏性的存在, 流体内部会产生剪应力. 此时, 应力张量不再是对角矩阵, 也不再是简单的各向同性压强形式. 静止流体的应力特征不再适用. 黏性使得流体对剪切变形产生抵抗, 从而在内部产生切向力.
+\end{itemize}
+
+
+\section*{II 教材习题}
+教材习题部分答案与教材给出答案有出入, 以本习题解析为准.
+\newline
+
+
+\textbf{TB10.4 一根长为 $l$、密度为 $\rho$ 的均质细杆, 浮在密度为 $\rho_0$ 的液体里, 杆的一端由一竖直细绳悬挂着, 使该端高出液面的距离为 $d$, 如图所示. 试求:}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.35\textwidth]{Fig/T10.4.png}
+  \caption{图T10.4}
+\end{figure}
+
+\textbf{(1)杆与液面的夹角 $\theta$;}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.35\textwidth]{Fig/T10.4.1.png}
+  \caption{图T10.4.1}
+\end{figure}
+
+如图T10.4.1 所示, 设细杆浮出水面部分的长度为 $x$、重力为 $W$、浮力为 $F$, 有
+\begin{equation}
+    W = (\rho l S)g, \quad F = \rho_0 S(l-x)g
+\end{equation}
+
+相对于悬挂点的力矩平衡:
+\begin{equation}
+    W \cdot \frac{l}{2}\cos\theta = F \left( \frac{l-x}{2} + x \right)\cos\theta
+\end{equation}
+
+解得
+\begin{equation}
+    x = l\sqrt{1-\rho/\rho_0}
+\end{equation}
+\begin{equation}
+    \sin\theta = \frac{d}{x} = \frac{d}{l\sqrt{1-\rho/\rho_0}}
+\end{equation}
+即
+\begin{equation}
+    \theta = \arcsin\left( \frac{d}{l\sqrt{1-\rho/\rho_0}} \right)
+\end{equation}
+\newline
+
+\textbf{(2)绳中的张力 $T$. 设杆的截面积为 $S$.}
+
+由杆在竖直方向所受合力为零得
+\begin{equation}
+    T = W - F = (\rho - \rho_0 + \rho_0 \sqrt{1-\rho/\rho_0})lSg
+\end{equation}
+\newline
+
+
+\textbf{TB10.6 一长方形容器长、宽、高分别是 $2\text{m}$、 $0.7\text{m}$ 和 $0.6\text{m}$, 内贮 $0.3\text{m}$ 深的水, 若容器沿长边方向做水平加速运动, 加速度为 $a = 3\text{m/s}^2$. 求水作用在容器各壁上的力.}
+
+一密闭长方形容器沿长边方向做水平加速运动, 须计算水作用在容器各壁 (前、后、左、右、上、下) 上的压力.
+
+已知参数:
+\begin{itemize}
+    \item 容器尺寸: 长 $L = 2\,\text{m}$, 宽 $W = 0.7\,\text{m}$, 高 $H = 0.6\,\text{m}$.
+    \item 初始水深: $h_0 = 0.3\,\text{m}$.
+    \item 加速度: $a = 3\,\text{m/s}^2$ (沿长边, 设为 $+x$ 方向).
+    \item 常数: $\rho = 1000\,\text{kg/m}^3$, $g = 9.8\,\text{m/s}^2$.
+\end{itemize}
+
+在加速参照系中, 等压面 (自由液面) 的倾角 $\theta$ 满足:
+\begin{equation}
+    \tan \theta = \frac{a}{g} = \frac{3}{9.8} \approx 0.3061
+\end{equation}
+
+由于 $V_{\text{水}} = V_{\text{气}}$ 且容器形状对称, 假设液面未发生剧烈截断, 液面应绕几何中心 $(x_c, z_c) = (1, 0.3)$ 旋转.
+
+液面高度方程 $h(x)$ (以底面后边缘为原点) 为:
+\begin{equation}
+    h(x) = 0.3 + (1 - x) \tan \theta
+\end{equation}
+
+检验边界条件:
+\begin{equation}
+    \begin{cases}
+        x = 0 \text{ (后壁): } & h(0) = 0.3 + 0.3061 = 0.6061\,\text{m} \\
+        x = 2 \text{ (前壁): } & h(2) = 0.3 - 0.3061 = -0.0061\,\text{m}
+    \end{cases}
+\end{equation}
+
+流体分布结论:
+\begin{itemize}
+    \item $h(0) > H = 0.6\,\text{m}$: 液体充满后壁, 并对顶盖后部产生压力.
+    \item $h(2) < 0$: 液体未接触前壁, 前壁受力为 0.
+    \item 液体在底面上从 $x=0$ 覆盖至 $x_{\text{bot}}$, 在顶面上从 $x=0$ 覆盖至 $x_{\text{top}}$.
+\end{itemize}
+
+计算接触界限坐标:
+\begin{equation}
+    \begin{aligned}
+        \text{顶面接触点 } x_{\text{top}}: & \quad h(x) = 0.6 \implies 0.6061 - 0.3061 x = 0.6 \implies x_{\text{top}} \approx 0.02\,\text{m} \\
+        \text{底面接触点 } x_{\text{bot}}: & \quad h(x) = 0 \implies 0.6061 - 0.3061 x = 0 \implies x_{\text{bot}} \approx 1.98\,\text{m}
+    \end{aligned}
+\end{equation}
+
+压强分布公式为 $p(x, z) = \rho g [h(x) - z]$, 其中 $h(x) = 0.6061 - 0.3061x$.
+
+由于 $x_{\text{bot}} < 2$, 前壁处于干区.
+\begin{equation}
+    F_{\text{front}} = 0\,\text{N}
+\end{equation}
+
+后壁完全浸没 ($0 \le z \le 0.6$). 压强呈梯形分布:
+顶端压强 $p_{\text{top}} = \rho g (0.6061 - 0.6) \approx 60\,\text{Pa}$.
+底端压强 $p_{\text{bot}} = \rho g (0.6061 - 0) \approx 5940\,\text{Pa}$.
+平均压强 $\bar{p} \approx 3000\,\text{Pa}$.
+\begin{equation}
+    F_{\text{rear}} = \bar{p} \cdot (W H) = 3000 \times (0.7 \times 0.6) = 1260\,\text{N}
+\end{equation}
+
+底面受力区域 $0 \le x \le 1.98$. 压强从 $5940\,\text{Pa}$ 线性降至 $0$.
+\begin{equation}
+    F_{\text{bottom}} = W \int_0^{1.98} \rho g h(x) \, \mathrm{d}x = W \cdot \frac{1}{2} p_{\text{max}} \cdot x_{\text{bot}}
+\end{equation}
+
+\begin{equation}
+    F_{\text{bottom}} = 0.7 \times 0.5 \times 5940 \times 1.98 \approx 4116\,\text{N}
+\end{equation}
+(注: 这与水的总重 $mg = 420 \times 9.8 = 4116\,\text{N}$ 平衡, 因顶面受力极小).
+
+受力区域 $0 \le x \le 0.02$. 压强从 $60\,\text{Pa}$ 线性降至 $0$.
+\begin{equation}
+    F_{\text{top}} = W \cdot \frac{1}{2} p_{\text{rear\_top}} \cdot x_{\text{top}} = 0.7 \times 0.5 \times 60 \times 0.02 \approx 0.42\,\text{N}
+\end{equation}
+该力数值极小, 工程上常可忽略.
+
+侧壁受力分为两部分: $x \in [0, 0.02]$ (满高梯形压强) 和 $x \in [0.02, 1.98]$ (三角形分布).
+由于第一部分极窄, 可近似合并计算或直接积分.
+\begin{equation}
+    F_{\text{side}} = \iint p(x,z) \, \mathrm{d}z \mathrm{d}x \approx \int_{0}^{1.98} \frac{1}{2} \rho g [h_{\text{eff}}(x)]^2 \, \mathrm{d}x
+\end{equation}
+
+更精确地, 主要贡献来自 $x > x_{\text{top}}$ 的区域, 即 $h(x) < 0.6$ 的部分.
+令 $u = h(x)$, $\mathrm{d}x = -\frac{\mathrm{d}u}{\tan \theta}$.
+\begin{equation}
+    F_{\text{side}} \approx \frac{\rho g}{2 \tan \theta} \int_{0}^{0.6} u^2 \, \mathrm{d}u = \frac{\rho g}{6 \tan \theta} [0.6^3]
+\end{equation}
+
+\begin{equation}
+    F_{\text{side}} = \frac{1000 \times 9.8}{6 \times 0.3061} \times 0.216 \approx 1152\,\text{N}
+\end{equation}
+
+若考虑 $x<0.02$ 的微小矩形修正, 总侧壁受力约为 $1188\,\text{N}$.
+\newline
+
+侧壁受力精确修正计算: 
+
+由于容器顶部存在限制 ($H=0.6\,\text{m}$), 侧壁的受力区域 $A$ 需要分为两部分计算:
+\begin{itemize}
+    \item 区域 I (满水区): $0 \le x \le x_{\text{top}}$. 此处液位 $h(x) > H$, 侧壁全高 $H$ 均受到液体压力, 压强呈梯形分布.
+    \item 区域 II (非满水区): $x_{\text{top}} < x \le x_{\text{bot}}$. 此处液位 $h(x) < H$, 侧壁湿润高度为 $h(x)$, 压强呈三角形分布.
+\end{itemize}
+
+已知临界坐标 $x_{\text{top}} \approx 0.02\,\text{m}$, 倾角正切 $\tan \theta \approx 0.3061$.
+
+区域 I 的受力 $F_1$, 在该极窄区域内, 侧壁上的压力是对压强在竖直方向 $z \in [0, H]$ 的积分.
+任意位置 $x$ 处的受力微元为:
+\begin{equation}
+    \mathrm{d}F_1 = \left( \int_{0}^{H} \rho g [h(x) - z] \, \mathrm{d}z \right) \mathrm{d}x = \rho g H \left( h(x) - \frac{H}{2} \right) \mathrm{d}x
+\end{equation}
+
+对 $x$ 从 $0$ 积到 $x_{\text{top}}$:
+\begin{equation}
+    F_1 = \rho g H \int_{0}^{0.02} \left( h_{\text{rear}} - x \tan \theta - 0.3 \right) \mathrm{d}x
+\end{equation}
+
+由于区间极小, 可取区间中点 $\bar{x} = 0.01$ 处的平均高度 $\bar{h} \approx 0.603\,\text{m}$ 近似计算:
+\begin{equation}
+    \begin{aligned}
+        F_1 &\approx \rho g H \left( \bar{h} - 0.3 \right) \cdot x_{\text{top}} \\
+        &= 1000 \times 9.8 \times 0.6 \times (0.603 - 0.3) \times 0.02 \\
+        &= 5880 \times 0.303 \times 0.02 \approx 35.6\,\text{N}
+    \end{aligned}
+\end{equation}
+
+区域 II 的受力 $F_2$, 在该区域, 湿润高度即为 $h(x)$, 侧壁受力对应三角形分布压强的总和:
+\begin{equation}
+    F_2 = \int_{x_{\text{top}}}^{x_{\text{bot}}} \frac{1}{2} \rho g [h(x)]^2 \, \mathrm{d}x
+\end{equation}
+
+换元求解, 令 $u = h(x)$, 则 $\mathrm{d}u = -\tan \theta \, \mathrm{d}x$.
+积分限: 当 $x = x_{\text{top}}$ 时 $u = H = 0.6$; 当 $x = x_{\text{bot}}$ 时 $u = 0$.
+\begin{equation}
+    \begin{aligned}
+        F_2 &= \frac{1}{2} \rho g \int_{0.6}^{0} u^2 \frac{\mathrm{d}u}{-\tan \theta} \\
+        &= \frac{\rho g}{2 \tan \theta} \int_{0}^{0.6} u^2 \, \mathrm{d}u \\
+        &= \frac{\rho g}{2 \tan \theta} \left[ \frac{u^3}{3} \right]_0^{0.6} = \frac{\rho g (0.6)^3}{6 \tan \theta}
+    \end{aligned}
+\end{equation}
+
+代入数值:
+\begin{equation}
+    F_2 = \frac{1000 \times 9.8 \times 0.216}{6 \times 0.3061} = \frac{2116.8}{1.8366} \approx 1152.6\,\text{N}
+\end{equation}
+
+总侧壁受力 $F_{\text{side}}$, 将两部分相加:
+\begin{equation}
+    F_{\text{side}} = F_1 + F_2 \approx 35.6 + 1152.6 = 1188.2\,\text{N}
+\end{equation}
+
+取整可得侧壁受力约为 $1188\,\text{N}$.
+\newline
+
+在上文中, 我们采用了 $g=9.8\,\text{m/s}^2$ 进行精确计算, 发现液面在几何上略微超过了容器顶角, 导致计算需要进行分段修正. 
+但在工程估算或某些特定教学场景中, 常取 $g=10\,\text{m/s}^2$. 这一微小的参数调整将导致物理图像发生质的变化——流体恰好处于“临界状态”. 
+
+当 $g$ 取 $10\,\text{m/s}^2$ 时, 自由液面的倾角 $\theta$ 变为:
+\begin{equation}
+    \tan \theta = \frac{a}{g} = \frac{3}{10} = 0.3
+\end{equation}
+
+此时, 液面相对于中心 $(x_c, z_c) = (1, 0.3)$ 的最大升高量与最大降低量均为:
+\begin{equation}
+    \Delta h = \frac{L}{2} \cdot \tan \theta = 1 \times 0.3 = 0.3\,\text{m}
+\end{equation}
+
+这意味着边界处的液位高度为:
+\begin{equation}
+    \begin{cases}
+        h_{\text{rear}} = h_c + \Delta h = 0.3 + 0.3 = 0.6\,\text{m} \equiv H \\
+        h_{\text{front}} = h_c - \Delta h = 0.3 - 0.3 = 0\,\text{m}
+    \end{cases}
+\end{equation}
+
+此时液面恰好为一个通过后壁顶棱和前壁底棱的对角面. 
+这一状态下, 液体刚好充满后壁但不对顶盖产生压力, 刚好接触前壁底部但无积水. 这消除了分段积分的必要性. 
+
+在临界状态下, 液面方程简化为 $h(x) = 0.6 - 0.3x$ ($0 \le x \le 2$). 
+
+前壁因 $h=0$ 而不受力. 后壁为满水状态, 压强分布为标准三角形:
+\begin{equation}
+    \begin{aligned}
+        F_{\text{front}} &= 0\,\text{N} \\
+        F_{\text{rear}} &= \frac{1}{2} \rho g H^2 W = \frac{1}{2} \times 1000 \times 10 \times (0.6)^2 \times 0.7 = 1260\,\text{N}
+    \end{aligned}
+\end{equation}
+(注: 尽管 $g$ 变大, 但液位高度略有下降, 巧合的是计算结果与精确解 $1260\,\text{N}$ 在数值上完全一致)
+
+由于液面仅在棱边接触顶盖且该处压强为零, 顶盖受力严格为零. 底面仅需支撑流体自重:
+\begin{equation}
+    \begin{aligned}
+        F_{\text{top}} &= 0\,\text{N} \\
+        F_{\text{bottom}} &= mg = \rho (L W h_0) g = 420 \times 10 = 4200\,\text{N}
+    \end{aligned}
+\end{equation}
+
+侧壁湿润面积为规则的直角三角形, 不再需要扣除顶部溢出部分. 受力积分大大简化:
+\begin{equation}
+    F_{\text{side}} = \int_{0}^{2} \frac{1}{2} \rho g [h(x)]^2 \, \mathrm{d}x = \frac{1}{2} \rho g \int_{0}^{2} (0.6 - 0.3x)^2 \, \mathrm{d}x
+\end{equation}
+
+直接利用几何相似性或换元积分 (令 $H(x)$ 从 $0.6$ 降至 $0$):
+\begin{equation}
+    F_{\text{side}} = \frac{1}{2} \rho g \cdot \frac{L}{H} \int_{0}^{H} y^2 \frac{\mathrm{d}x}{\mathrm{d}y} \mathrm{d}y = \frac{1}{6} \rho g L H^2
+\end{equation}
+
+代入计算:
+\begin{equation}
+    F_{\text{side}} = \frac{1}{6} \times 1000 \times 10 \times 2 \times (0.6)^2 = \frac{7200}{6} = 1200\,\text{N}
+\end{equation}
+\newline
+
+
+\textbf{TB10.7 一粗细均匀的 $U$ 形管内装有一定量的液体. $U$ 形管底部的长度为 $l$. 当 $U$ 形管以加速度 $a$ 沿水平方向加速时 (如图所示), 求两管内液面的高度差 $h$.}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.3\textwidth]{Fig/T10.7.png}
+  \caption{图T10.7}
+\end{figure}
+
+仿上题, 取相对于 $U$ 形管静止的参考系, 由于该参考系为非惯性系, 需引入向左的惯性力, 故液体中任一点 $P$ 的表观重力方向应为 $g'$ 方向, 此时的液面与水平方向的夹角 $\theta$ 满足
+\begin{equation}
+    \tan\theta = \frac{a}{g} = \frac{h}{l}
+\end{equation}
+
+解得
+\begin{equation}
+    h = \frac{al}{g}
+\end{equation}
+\newline
+
+
+\textbf{TB10.10 一个直立的密闭圆柱形容器, 直径 $1\text{m}$、高 $2\text{m}$, 内贮 $0.5\text{m}$ 深的水, 以 $\omega = 20\text{rad/s}$ 的角速度绕中心轴线旋转, 问容器底部有多少面积不为水覆盖?}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.25\textwidth]{Fig/T10.10.1.png}
+  \caption{图T10.10.1}
+\end{figure}
+
+如图T10.10.1 所示, 取相对于圆柱形容器静止的参考系, 除有了重力势能外还有离心势能, 故伯努利方程修正为
+\begin{equation}
+    p + \rho g z - \frac{1}{2}\rho\omega^2 r^2 + \frac{1}{2}\rho v^2 = C
+\end{equation}
+题设 $\omega=20$, $r_1=0.5$, $z_1=2$, $v=0$ (水相对于容器静止) 得
+\begin{equation}
+    p - \frac{1}{2}\rho\omega^2 r^2 - \rho g z + C = 0 \label{eq:10.10.1}
+\end{equation}
+
+若当
+\begin{equation}
+    z=0 \text{ 时, } r=0, p=p_0 \label{eq:10.10.2}
+\end{equation}
+其中, $p_0$ 是液体表面的压强, 即大气压强, 此时容器底部都有水覆盖. 将式\eqref{eq:10.10.2}代入式\eqref{eq:10.10.1}, 得
+\begin{equation}
+    C = p_0
+\end{equation}
+最后求得液体内压强分布
+\begin{equation}
+    p = \frac{1}{2}\rho\omega^2 r^2 - \rho g z + p_0
+\end{equation}
+
+由于液体表面任一点的压强为大气压强, $p=p_0$, 于是得到液体表面的方程
+\begin{equation}
+    z = \frac{\omega^2 r^2}{2g} \label{eq:10.10.3}
+\end{equation}
+
+式\eqref{eq:10.10.3}为一旋转抛物面方程, 但不是题设情况, 因为当 $r=r_1$ 时,
+\begin{equation}
+    z = \frac{\omega^2 r_1^2}{2g} = \frac{20^2 \times 0.5^2}{2 \times 9.8} = 5.1 > z_1, \text{不合题意}
+\end{equation}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.25\textwidth]{Fig/T10.10.2.png}
+  \caption{图T10.10.2}
+\end{figure}
+这是因为假设\eqref{eq:10.10.2}不正确, 实际情况应该是图T10.10.2情况:
+\begin{equation}
+    \text{当 } z=0 \text{ 时, } r=r_0, p=p_0 \label{eq:10.10.4}
+\end{equation}
+将式\eqref{eq:10.10.4}代入式\eqref{eq:10.10.1}, 得
+\begin{equation}
+    c = p_0 - \frac{1}{2}\rho\omega^2 r_0^2
+\end{equation}
+代入式\eqref{eq:10.10.1}得
+\begin{equation}
+    p - p_0 = \frac{1}{2}\rho\omega^2 (r^2-r_0^2) - \rho g z
+\end{equation}
+于是得到液体表面 ($p=p_0$) 的方程
+\begin{equation}
+    z = \frac{\omega^2 (r^2-r_0^2)}{2g} \label{eq:10.10.5}
+\end{equation}
+
+将题设条件 $\omega=20$, $r=r_1=0.5$, $z=z_1=2$, 水的体积 $V=0.5\pi r_1^2$, 代入得
+\begin{equation}
+    z_1 = \frac{\omega^2 (r_1^2-r_0^2)}{2g} \label{eq:10.10.6}
+\end{equation}
+\begin{equation}
+    r_0^2 = r_1^2 - \frac{2g z_1}{\omega^2} = 0.5^2 - \frac{2 \times 9.8 \times 2}{20^2} = 0.152\text{(m}^2\text{)}
+\end{equation}
+即容器底部不为水覆盖的面积为
+\begin{equation}
+    A = \pi r_0^2 = 0.48\text{m}^2
+\end{equation}
+
+现在算容器中有没有这么多水.
+水的体积为
+\begin{equation}
+\begin{aligned}
+    V &= \int_{r_0}^{r_1} 2\pi r z \text{d}r = \int_{r_0}^{r_1} 2\pi r \frac{\omega^2 (r^2-r_0^2)}{2g} \text{d}r = \frac{\pi\omega^2}{g} \int_{r_0}^{r_1} (r^3 - r r_0^2) \text{d}r \\
+    &= \frac{\pi\omega^2}{g} \left[ \frac{r^4}{4} - \frac{r^2 r_0^2}{2} \right]_{r_0}^{r_1} \\
+    &= \frac{\pi\omega^2}{g} \left( \frac{r_1^4}{4} - \frac{r_1^2 r_0^2}{2} - \frac{r_0^4}{4} + \frac{r_0^4}{2} \right) \\
+    &= \frac{\pi\omega^2}{g} \left( \frac{r_1^4}{4} - \frac{r_1^2 r_0^2}{2} + \frac{r_0^4}{4} \right) \\
+    &= \frac{\pi\omega^2}{4g} (r_1^2 - r_0^2)^2
+\end{aligned}
+\end{equation}
+将式\eqref{eq:10.10.6}代入得
+\begin{equation}
+    V = \frac{1}{2}z_1\pi (r_1^2-r_0^2) < 0.5\pi r_1^2 = V_1
+\end{equation}
+且
+\begin{equation}
+    \frac{V}{V_1} = \frac{z_1}{r_1^2} \left(1-\frac{r_0^2}{r_1^2}\right) = 0.78
+\end{equation}
+即有约 22\% 的水被甩出容器外, 容器底部不为水覆盖的面积为 $A = 0.48\text{m}^2$.
+\newline
+
+
+\textbf{TB10.13 如图所示, 一水平管下装有 $U$ 形管, $U$ 形管内盛有水银. 已知水平管中粗、细处的横截面积分别为: $A_1 = 5.0 \times 10^{-3}\text{m}^2$, $A_2 = 1.0 \times 10^{-3}\text{m}^2$, 当水平管中有水流作定常流动时, 测得 $U$ 形管中水银面的高度差 $h = 3.0 \times 10^{-2}\text{m}$. 求水流在粗管处的流速 $v_1$. 已知水和水银的密度分别为: $\rho = 1.0 \times 10^3\text{kg/m}^3$, $\rho' = 13.6 \times 10^3\text{kg/m}^3$.}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.35\textwidth]{Fig/T10.13.png}
+  \caption{图T10.13}
+\end{figure}
+
+设液体中 $A_1$ 处和 $A_2$ 处的压强分别为 $p_1$ 和 $p_2$, 液体流速分别为 $v_1$ 和 $v_2$, 有:
+
+题设:
+\begin{equation}
+    v_1 A_1 = v_2 A_2 \tag{1}
+\end{equation}
+
+伯努利方程:
+\begin{equation}
+    p_2 + \frac{1}{2}\rho v_2^2 = p_1 + \frac{1}{2}\rho v_1^2 \tag{2}
+\end{equation}
+
+题设:
+\begin{equation}
+    p_1 - p_2 = \rho' g h \tag{3}
+\end{equation}
+
+由式 (1) $\sim$ 式 (3) 解得:
+\begin{equation}
+    v_1 = A_2 \sqrt{\frac{2\rho' g h}{\rho (A_1^2 - A_2^2)}} \approx 0.58 \, \mathrm{m/s}
+\end{equation}
+\newline
+
+
+\textbf{TB10.14 一喷泉竖直喷出高度为 $H$ 的水流, 喷泉的喷嘴具有上细下粗的形状, 上截面的直径为 $d$, 下截面的直径为 $D$, 喷嘴高为 $h$. 设大气压强为 $p_0$. 求:}
+
+\textbf{(1)水的体积流量;}
+
+喷水速度
+\begin{equation}
+    v = \sqrt{2gH}
+\end{equation}
+
+体积流量
+\begin{equation}
+    Q = v \left(\frac{1}{4}\pi d^2\right) = \frac{1}{4}\pi d^2 \sqrt{2gH}
+\end{equation}
+\newline
+
+\textbf{(2)喷嘴的下截面处的压强.}
+
+下截面和上截面之间的伯努利方程为
+\begin{equation}
+    p_D + \frac{1}{2}\rho v_D^2 = p_0 + \rho g h + \frac{1}{2}\rho v_d^2
+\end{equation}
+
+由流量连续性方程得
+\begin{equation}
+    v_d = v, \quad v_D = v_d \frac{d^2}{D^2}
+\end{equation}
+
+解得
+\begin{equation}
+    p_D = p_0 + \rho gh + \rho gh \left(1-\frac{d^4}{D^4}\right)
+\end{equation}
+\newline
+
+
+\textbf{TB10.19 一个半径 $r=0.10 \times 10^{-2}\text{m}$ 的小空气泡在黏滞液体中上升, 液体的黏滞系数 $\eta = 0.11\text{Pa}\cdot\text{s}$, 密度为 $0.72 \times 10^3\text{kg/m}^3$. 求其上升的收尾速度.}
+
+与浮力相比, 小空气泡的重力可以忽略. 当它以收尾速度运动时浮力和摩擦力正好相等, 有
+\begin{equation}
+    \frac{4}{3}\pi r^3 \rho g = 6\pi\eta v
+\end{equation}
+
+题设
+\begin{equation}
+    r = 0.10\times 10^{-2}\text{m}, \quad \eta = 0.11\text{Pa}\cdot\text{s}, \quad \rho = 0.72\times 10^3\text{kg / m}^3
+\end{equation}
+
+代入得
+\begin{equation}
+    v = \frac{2r^2 \rho g}{9\eta} = 1.4\times 10^{-2}\text{ m/s}
+\end{equation}
+\newline
+
+
+\textbf{TB10.20 在直径为 $305\text{mm}$ 的输油管内, 安装了一个开口面积为原来面积 $1/5$ 的隔片. 管中的石油流量为 $0.07\text{m}^3\text{/s}$, 其运动黏度 $\eta/\rho = 0.0001\text{m}^2\text{/s}$. 石油经过隔片时是否变为湍流?}
+
+我们知道, 当雷诺数大于 2000 时流动将变为湍流.
+
+题设: 输油管直径 $D=0.305\text{m}$, 运动黏度 $\nu = \eta/\rho = 0.0001\text{m}^2\text{/s}$, 石油流量 $Q=0.07\text{m}^3\text{/s}$, 隔片开口面积
+\begin{equation}
+    S = \frac{1}{5}\pi\left(\frac{D}{2}\right)^2 = \frac{\pi D^2}{20} = \pi\left(\frac{d}{2}\right)^2
+\end{equation}
+其中, $d$ 为隔片开口直径.
+
+可以求得流速:
+\begin{equation}
+    v = \frac{Q}{S} = \frac{20Q}{\pi D^2}
+\end{equation}
+以上各量代入雷诺数的定义
+\begin{equation}
+    Re = \frac{\rho v d}{\eta} = \frac{vd}{\nu} = \frac{4\sqrt{5}Q}{\pi\nu D} \approx 6500
+\end{equation}
+即石油经过隔片时变为了湍流.
+\newline
+
+
+\section*{III 补充习题}
+\textbf{1 设流体质点的轨迹方程为:}
+\begin{equation}
+    \begin{cases}
+        x = c_1e^t - t - 1 \\
+        y = c_2e^t + t - 1 \\
+        z = c_3
+    \end{cases}
+\end{equation}
+\textbf{其中$c_1$,$c_2$,$c_3$为常数. 试求：}
+
+\textbf{(1)$t=0$时位于$x=a$,$y=b$,$z=c$处的流体质点的轨迹方程；}
+
+设流体质点的轨迹方程为 (Lagrange 法描述):
+\begin{equation}
+\begin{cases}
+    x = c_1 e^t - t - 1 \\
+    y = c_2 e^t + t - 1 \\
+    z = c_3
+\end{cases}
+\end{equation}
+其中 $c_1, c_2, c_3$ 为常数, 它们是质点在参考时刻 (通常 $t=0$) 的初始位置的函数, 用来标识不同的质点.
+
+在 $t=0$ 时, 将 $x=a, y=b, z=c$ 代入轨迹方程:
+\begin{equation}
+    \begin{cases}
+        a = c_1 e^0 - 0 - 1 \implies a = c_1 - 1 \implies c_1 = a+1 \\
+        b = c_2 e^0 + 0 - 1 \implies b = c_2 - 1 \implies c_2 = b+1 \\
+        c = c_3
+    \end{cases}
+\end{equation}
+将求得的 $c_1, c_2, c_3$ 代回原轨迹方程, 即可得到该特定质点的轨迹方程:
+\begin{equation}
+\begin{cases}
+    x = (a+1)e^t - t - 1 \\
+    y = (b+1)e^t + t - 1 \\
+    z = c
+\end{cases}
+\end{equation}
+\newline
+
+\textbf{(2)求任意流体质点的速度；}
+
+流体质点的速度是其位置对时间 $t$ 的导数 (Lagrange 速度):
+\begin{equation}
+\begin{cases}
+    u = \frac{\partial x}{\partial t} = c_1 e^t - 1 \\
+    v = \frac{\partial y}{\partial t} = c_2 e^t + 1 \\
+    w = \frac{\partial z}{\partial t} = 0
+\end{cases}
+\end{equation}
+\newline
+
+\textbf{(3)用Euler法表示上面流动的速度场；}
+
+Euler 法描述的速度场 $\vec{V}(x,y,z,t) = (u(x,y,z,t), v(x,y,z,t), w(x,y,z,t))$ 是将 Lagrange 速度中的常数 $c_1, c_2$ 用当前位置 $(x,y)$ 和时间 $t$ 表示.
+从轨迹方程和速度方程我们有:
+\begin{equation}
+    \begin{cases}
+        x+1 = c_1 e^t - t \\
+        y+1 = c_2 e^t + t
+    \end{cases}
+\end{equation}
+
+从速度方程可知:
+\begin{equation}
+    \begin{cases}
+        c_1 e^t = u+1 \\
+        c_2 e^t = v-1
+    \end{cases}
+\end{equation}
+
+将 $c_1 e^t$ 和 $c_2 e^t$ 代入轨迹方程中经过整理的式子:
+\begin{equation}
+    \begin{cases}
+        x+1 = (u+1) - t \implies u = x+t \\
+        y+1 = (v-1) + t \implies v = y-t+2
+    \end{cases}
+\end{equation}
+
+因此, 用 Euler 法表示的速度场为:
+\begin{equation}
+\begin{cases}
+    u = x+t \\
+    v = y-t+2 \\
+    w = 0
+\end{cases}
+\end{equation}
+\newline
+
+\textbf{(4)用Euler法直接求加速度场和用Lagrange法求得质点的加速度场后再换算成Euler法的加速度场, 二者结果是否相同?}
+
+用 Euler 法直接求加速度场.
+
+Euler 法的加速度场 $\vec{a}(x,y,z,t) = (a_x, a_y, a_z)$ 定义为:
+\begin{equation}
+    \vec{a} = \frac{\partial\vec{V}}{\partial t} + (\vec{V} \cdot \nabla)\vec{V}
+\end{equation}
+
+对于二维平面流 (因为 $w=0$, 速度不依赖于 $z$), 展开为:
+\begin{equation}
+    \begin{cases}
+        a_x = \frac{\partial u}{\partial t} + u\frac{\partial u}{\partial x} + v\frac{\partial u}{\partial y} \\
+        a_y = \frac{\partial v}{\partial t} + u\frac{\partial v}{\partial x} + v\frac{\partial v}{\partial y} \\
+        a_z = \frac{\partial w}{\partial t} + u\frac{\partial w}{\partial x} + v\frac{\partial w}{\partial y} = 0
+    \end{cases}
+\end{equation}
+
+将 Euler 速度场代入:
+\begin{equation}
+    \begin{cases}
+        u = x+t \implies \frac{\partial u}{\partial t} = 1, \quad \frac{\partial u}{\partial x} = 1, \quad \frac{\partial u}{\partial y} = 0 \\
+        v = y-t+2 \implies \frac{\partial v}{\partial t} = -1, \quad \frac{\partial v}{\partial x} = 0, \quad \frac{\partial v}{\partial y} = 1
+    \end{cases}
+\end{equation}
+
+计算 $a_x$:
+\begin{equation}
+    a_x = 1 + (x+t)(1) + (y-t+2)(0) = 1 + x + t
+\end{equation}
+
+计算 $a_y$:
+\begin{equation}
+    a_y = -1 + (x+t)(0) + (y-t+2)(1) = -1 + y - t + 2 = y - t + 1
+\end{equation}
+
+所以, 用 Euler 法直接求得的加速度场为:
+\begin{equation}
+\begin{cases}
+    a_x = x+t+1 \\
+    a_y = y-t+1 \\
+    a_z = 0
+\end{cases}
+\end{equation}
+
+用 Lagrange 法求得质点的加速度场后再换算成 Euler 法.
+
+Lagrange 法的加速度 $\vec{A} = (A_x, A_y, A_z)$ 是 Lagrange 速度对时间 $t$ 的导数:
+\begin{equation}
+    \begin{cases}
+        A_x = \frac{\partial u}{\partial t} = \frac{\partial}{\partial t}(c_1 e^t - 1) = c_1 e^t \\
+        A_y = \frac{\partial v}{\partial t} = \frac{\partial}{\partial t}(c_2 e^t + 1) = c_2 e^t \\
+        A_z = \frac{\partial w}{\partial t} = \frac{\partial}{\partial t}(0) = 0
+    \end{cases}
+\end{equation}
+
+现在需要将 $c_1, c_2$ 用 $x, y, t$ 表示, 从而将 Lagrange 加速度场转换为 Euler 法的加速度场.
+从 (3) 中的推导可知:
+\begin{equation}
+    \begin{cases}
+        c_1 e^t = u+1 = (x+t)+1 = x+t+1 \\
+        c_2 e^t = v-1 = (y-t+2)-1 = y-t+1
+    \end{cases}
+\end{equation}
+
+将这些代入 $A_x, A_y$:
+\begin{equation}
+\begin{cases}
+    A_x = x+t+1 \\
+    A_y = y-t+1 \\
+    A_z = 0
+\end{cases}
+\end{equation}
+
+通过比较两种方法得到的加速度场:
+用 Euler 法直接求得的加速度场:
+\begin{equation}
+\begin{cases}
+    a_x = x+t+1 \\
+    a_y = y-t+1 \\
+    a_z = 0
+\end{cases}
+\end{equation}
+
+用 Lagrange 法求得后转换的加速度场:
+\begin{equation}
+\begin{cases}
+    A_x = x+t+1 \\
+    A_y = y-t+1 \\
+    A_z = 0
+\end{cases}
+\end{equation}
+
+二者结果相同. 这符合流体动力学的基本原理, 无论使用 Lagrange 观点还是 Euler 观点, 对同一个物理运动的描述 (如加速度) 最终应该是等价的.
+\newline
+
+
+\textbf{2 已知二维速度场$u_x=\frac{x}{1+t}$,$u_y=y$,}
+
+\textbf{(1)求迹线方程, 已知条件为$x|_{y=1,t=0}=1$;}
+
+已知二维速度场为:
+\begin{equation}
+    u_x = \frac{x}{1+t}, \quad u_y = y
+\end{equation}
+
+迹线是流体质点在空间中运动的轨迹. 设流体质点的坐标为 $(x(t), y(t))$, 则其运动方程满足定义:
+\begin{equation}
+    \begin{cases}
+        \frac{\mathrm{d}x}{\mathrm{d}t} = u_x = \frac{x}{1+t} \\[8pt]
+        \frac{\mathrm{d}y}{\mathrm{d}t} = u_y = y
+    \end{cases}
+\end{equation}
+
+首先对 $x$ 分量进行分离变量积分:
+\begin{equation}
+    \begin{aligned}
+        \frac{\mathrm{d}x}{x} &= \frac{\mathrm{d}t}{1+t} \\
+        \int \frac{\mathrm{d}x}{x} &= \int \frac{\mathrm{d}t}{1+t} \\
+        \ln |x| &= \ln |1+t| + C_1 \\
+        x &= C_1 (1+t)
+    \end{aligned}
+\end{equation}
+
+接着对 $y$ 分量进行分离变量积分:
+\begin{equation}
+    \begin{aligned}
+        \frac{\mathrm{d}y}{y} &= \mathrm{d}t \\
+        \int \frac{\mathrm{d}y}{y} &= \int \mathrm{d}t \\
+        \ln |y| &= t + C_2 \\
+        y &= C_3 e^t
+    \end{aligned}
+\end{equation}
+
+根据已知初始条件 $\left.x\right|_{y=1, t=0} = 1$, 即当 $t=0$ 时, 质点位于 $(x, y) = (1, 1)$ 处. 代入求解积分常数:
+\begin{equation}
+    \begin{cases}
+        1 = C_1 (1+0) \implies C_1 = 1 \\
+        1 = C_3 e^0 \implies C_3 = 1
+    \end{cases}
+\end{equation}
+
+由此得到质点的运动方程 (参数方程):
+\begin{equation}
+    \begin{cases}
+        x = 1+t \\
+        y = e^t
+    \end{cases}
+\end{equation}
+
+消去参数 $t$ 以获得迹线方程. 由第一式得 $t = x - 1$, 代入第二式:
+\begin{equation}
+    y = e^{x-1}
+\end{equation}
+故所求迹线方程为 $y = e^{x-1}$.
+\newline
+
+\textbf{(2)求流线方程, 已知条件为$x|_{t=0}=a$,$y|_{t=0}=b$;}
+
+流线是某一瞬时 $t$ 的曲线, 其上任一点的切线方向与该点的速度向量方向一致. 流线微分方程定义为:
+\begin{equation}
+    \frac{\mathrm{d}x}{u_x} = \frac{\mathrm{d}y}{u_y}
+\end{equation}
+
+将速度分量代入上述方程:
+\begin{equation}
+    \frac{\mathrm{d}x}{\frac{x}{1+t}} = \frac{\mathrm{d}y}{y}
+\end{equation}
+
+整理得 (此时 $t$ 视为常数):
+\begin{equation}
+    (1+t) \frac{\mathrm{d}x}{x} = \frac{\mathrm{d}y}{y}
+\end{equation}
+
+两边积分:
+\begin{equation}
+    \begin{aligned}
+        (1+t) \ln |x| &= \ln |y| - \ln C(t) \\
+        \ln |x|^{1+t} &= \ln \left| \frac{y}{C(t)} \right| \\
+        y &= C(t) \cdot x^{1+t}
+    \end{aligned}
+\end{equation}
+
+根据已知条件 $\left.x\right|_{t=0} = a, \left.y\right|_{t=0} = b$, 即要求在 $t=0$ 时刻, 经过点 $(a, b)$ 的流线方程.
+\begin{equation}
+    \text{当 } t=0 \text{ 时, 流线方程形式为:} \quad y = C(0) \cdot x
+\end{equation}
+
+将点 $(a, b)$ 代入确定常数 $C(0)$:
+\begin{equation}
+    b = C(0) \cdot a \implies C(0) = \frac{b}{a}
+\end{equation}
+
+因此, 该时刻的流线方程为:
+\begin{equation}
+    y = \frac{b}{a} x
+\end{equation}
+\newline
+
+
+\textbf{3 如图为密立根油滴实验的简化示意图,1913年密立根用该实验证明了电子所带电量为电荷最小单位. 实验分为无电场和有电场两次测量. 无电场时, 测量到油滴下坠时的终端速度为$v$; 有电场时油滴开始上升, 终端速度为$v'$. 假设空气粘滞系数为$\eta$, 油滴半径为$r$, 油和空气的密度分别为$\rho_0$,$\rho$, 电场强度为$E$, 重力加速度为$g$. 求油滴的电荷量$q$.}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{Fig/3.3.png}
+  \caption{图3.3}
+\end{figure}
+
+本题考查密立根油滴实验的受力平衡分析. 我们分别对油滴在无电场下落和有电场上升两个过程建立动力学方程.
+
+设油滴的质量为 $m$, 体积为 $V$. 根据球体体积公式及密度定义:
+\begin{equation}
+    V = \frac{4}{3}\pi r^3, \quad m = \rho_o V
+\end{equation}
+
+油滴受到的重力 $G$ 和空气浮力 $F_b$ 分别为:
+\begin{equation}
+    G = m g = \frac{4}{3}\pi r^3 \rho_o g, \quad F_b = \rho V g = \frac{4}{3}\pi r^3 \rho g
+\end{equation}
+
+根据斯托克斯定律 (Stokes' Law), 油滴在空气中运动受到的粘滞阻力 $f$ 与速率 $u$ 成正比:
+\begin{equation}
+    f = 6\pi \eta r u
+\end{equation}
+
+当不加电场时, 油滴以终端速度 $v$ 匀速下落. 此时油滴受力平衡, 向下的重力等于向上的浮力与空气阻力之和.
+建立方程:
+\begin{equation}
+    G = F_b + f_{\text{down}}
+\end{equation}
+
+其中 $f_{\text{down}} = 6\pi \eta r v$. 移项可得油滴的有效重力 (视重):
+\begin{equation}
+    G - F_b = 6\pi \eta r v
+\end{equation}
+此方程联系了重力、浮力与下落速度的关系.
+
+施加竖直向上的匀强电场 $E$ 后, 油滴受到向上的电场力 $F_e = qE$, 并以终端速度 $v'$ 匀速上升.
+此时油滴受力平衡, 向上的力 (电场力、浮力) 等于向下的力 (重力、空气阻力). 注意此时运动方向向上, 故阻力向下.
+建立方程:
+\begin{equation}
+    F_e + F_b = G + f_{\text{up}}
+\end{equation}
+
+其中 $f_{\text{up}} = 6\pi \eta r v'$. 整理方程, 将电场力 $F_e$ 表达为:
+\begin{equation}
+    qE = (G - F_b) + 6\pi \eta r v'
+\end{equation}
+
+将步骤 2 中得到的有效重力表达式 $G - F_b = 6\pi \eta r v$ 代入步骤 3 的方程中:
+\begin{equation}
+    \begin{aligned}
+        qE &= 6\pi \eta r v + 6\pi \eta r v' \\
+        qE &= 6\pi \eta r (v + v')
+    \end{aligned}
+\end{equation}
+
+由此解得油滴所带电荷量 $q$:
+\begin{equation}
+    q = \frac{6\pi \eta r (v + v')}{E}
+\end{equation}
+
+
+\end{document}

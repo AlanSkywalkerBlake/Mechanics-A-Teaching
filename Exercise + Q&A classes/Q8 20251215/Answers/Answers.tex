@@ -1,0 +1,1654 @@
+\documentclass[UTF8,8pt,a4paper]{article}
+\usepackage{ctex}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bookmark}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{caption}
+\usepackage{hyperref}
+
+\geometry{left=1.8cm,right=1.8cm,top=1.9cm,bottom=1.9cm}
+\makeatletter
+\def\@fnsymbol#1{\ensuremath{%
+  \ifcase#1\or % 0
+    \dagger\or % 1 - 改为 dagger
+    *\or       % 2 - 原来的 dagger 变成 asterisk
+    \ddotagger\or % 3
+    \S\or      % 4
+    \P\or      % 5
+    \|\or      % 6 (DOUBLE VERTICAL LINE)
+    \or      % 7
+    \dagger\dagger\or % 8
+    \ddotagger\ddotagger % 9
+  \else
+    \@ctrerr
+  \fi
+}}
+\makeatother
+
+\title{\huge\textbf{刚体力学习题解答}}
+\author{TA：疏宇\thanks{School of Gifted Young, USTC, email:\url{shuyu2023@mail.ustc.edu.cn}}\quad{}师驰昊\thanks{School of Gifted Young, USTC, email:\url{1984019655@qq.com}}}
+\date{December 10$^{\text{th}}$, 2025}
+
+\begin{document}
+\maketitle
+
+\section*{I 简答题}
+简答题没有标准答案, 以下仅提供思路分析.
+\newline
+
+
+\textbf{1 质量和半径分别为 $m_1, m_2, R_1, R_2$ 的两均质圆柱体各自绕其光滑轴以角速度 $\Omega_1, \Omega_2$ 自转, 两轴平行, 自转方向相同, 如图 1.1 所示:}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.4\textwidth]{Fig/1.1.png}
+  \caption*{图 1.1}
+\end{figure}
+
+\textbf{(1) 有人说以 $m_1$ 的圆心 $O_1$ 为参考点, 可以用 $J_1\Omega_1 + J_2\Omega_2$ 表示体系的总角动量 ($J_1, J_2$ 分别为各自绕其转轴的转动惯量). 这种说法对吗? 为什么?}
+
+\textbf{该说法正确. }
+
+我们需要根据质点系角动量的定义及刚体平面运动的性质进行严谨分析. 对于一般的质点系或刚体系, 若选取空间中固定的一点 $P$ 为参考点, 体系的总角动量 $\vec{L}$ 等于各刚体关于 $P$ 的角动量之和. 根据柯尼希定理 (Koenig's Theorem), 单个刚体 $i$ 关于某固定参考点 $P$ 的角动量 $\vec{L}_i$ 可以分解为质心 $C_i$ 关于 $P$ 点的轨道角动量与刚体绕质心自转的自旋角动量之和:
+\begin{equation}
+    \vec{L}_i = \vec{r}_{C_i/P} \times m_i \vec{v}_{C_i} + I_{C_i} \vec{\omega}_i
+\end{equation}
+其中 $\vec{r}_{C_i/P}$ 为质心相对于参考点 $P$ 的位置矢量, $\vec{v}_{C_i}$ 为质心的速度, $I_{C_i}$ 为绕质心轴的转动惯量, $\vec{\omega}_i$ 为角速度矢量.
+
+在本题情境中, 取 $m_1$ 的圆心 $O_1$ 为参考点. 对于圆柱体 1, 其质心即为 $O_1$, 故位移 $\vec{r}_{C_1} = \vec{0}$, 且由于转轴固定, 质心速度 $\vec{v}_{C_1} = \vec{0}$, 其角动量简化为 $\vec{L}_1 = J_1 \vec{\Omega}_1$. 对于圆柱体 2, 其质心位于 $O_2$, 尽管位置矢量 $\vec{r}_{C_2/O_1} \neq \vec{0}$, 但由于题目明确指出两圆柱体“各自绕其光滑轴...自转”, 这意味着圆柱体 2 的几何中心轴在空间中是几何固定的, 即质心速度 $\vec{v}_{C_2} = \vec{0}$. 因此, 其轨道角动量项 $\vec{r}_{C_2} \times m_2 \vec{v}_{C_2}$ 同样为零, 角动量仅剩自旋部分 $\vec{L}_2 = J_2 \vec{\Omega}_2$.
+
+考虑到两轴平行且自转方向相同, 设角速度方向垂直于纸面, 则可以将矢量和简化为代数和. 体系总角动量为:
+\begin{equation}
+    L_{\text{total}} = |\vec{L}_1 + \vec{L}_2| = J_1 \Omega_1 + J_2 \Omega_2
+\end{equation}
+因此, 以 $m_1$ 的圆心 $O_1$ 为参考点, 体系的总角动量确实可以用 $J_1\Omega_1 + J_2\Omega_2$ 表示.
+\newline
+
+
+\textbf{(2) 现让两轴互相接触, 有人说二者之间的摩擦力为内力, 合力矩为 0, 体系角动量守恒. 这种说法对吗? 为什么?}
+
+\textbf{该说法错误.}
+
+尽管两圆柱体之间的摩擦力确实互为作用力与反作用力, 属于系统的内力, 且内力在接触点产生的合力矩为零, 但判断角动量是否守恒的充分必要条件是系统所受的合外力矩是否为零. 题目中的观点主要错误在于忽略了固定转轴所需的约束力 (即轴承对圆柱体的作用力), 这些力对于所选系统而言属于外力.
+
+我们可以通过计算体系角动量随时间的变化率来证明这一点. 设接触面间产生滑动摩擦力大小为 $f$, 方向沿切向. 由于两轴固定, 摩擦力会对两个圆柱体分别产生阻碍或驱动转动的力矩. 取 $O_1$ 为参考点, 系统角动量的变化率为:
+\begin{equation}
+    \frac{d L_{\text{sys}}}{dt} = \frac{d}{dt}(J_1 \Omega_1 + J_2 \Omega_2) = J_1 \dot{\Omega}_1 + J_2 \dot{\Omega}_2
+\end{equation}
+根据刚体定轴转动定律, 各刚体的角加速度由其所受力矩决定. 设摩擦力对两轮产生的力矩分别为 $\tau_1$ 和 $\tau_2$ (数值上 $\tau_1 = -fR_1$, $\tau_2 = -fR_2$, 假设摩擦力使两者减速), 则有:
+\begin{equation}
+    \frac{d L_{\text{sys}}}{dt} = \tau_1 + \tau_2 = -f R_1 - f R_2 = -f(R_1 + R_2) \neq 0
+\end{equation}
+由此可见, 总角动量并不守恒.
+
+我们也可以直接分析外力矩的来源来解释这一结果. 取 $O_1$ 为参考点:
+\begin{equation}
+    \begin{aligned}
+        & \text{1. 内力矩:} \quad \vec{M}_{\text{internal}} = \vec{0} \quad (\text{摩擦力与正压力互为内力}) \\
+        & \text{2. 重力力矩:} \quad \vec{M}_{G} = \vec{0} \quad (\text{假设重心在轴上或被支持力平衡}) \\
+        & \text{3. 轴承约束力矩:} \quad \text{这是导致不守恒的关键.}
+    \end{aligned}
+\end{equation}
+圆柱体 2 的质心 $O_2$ 保持静止 ($\vec{a}_{C2} = 0$), 根据牛顿第二定律, 轴 $O_2$ 必须对圆柱体 2 施加一个水平方向的外力 $\vec{F}_{\text{ext}}$ 以平衡接触点处的摩擦力 $\vec{f}$ (以及正压力 $\vec{N}$). 即沿切向方向, 轴对圆柱体 2 的约束力大小为 $F_{\text{ext}} = f$, 方向与该轮受到的摩擦力相反. 该外力 $\vec{F}_{\text{ext}}$ 作用在 $O_2$ 点, 相对于参考点 $O_1$ 的力臂为 $R_1 + R_2$. 该外力产生的力矩为:
+\begin{equation}
+    \tau_{\text{ext}} = -(R_1 + R_2) \cdot F_{\text{ext}} = -f(R_1 + R_2)
+\end{equation}
+这与上述通过 $dL/dt$ 计算的结果完全一致. 由于存在非零的合外力矩 $\tau_{\text{ext}}$, 体系的角动量不守恒.
+\newline
+
+
+\textbf{2 一个梯子斜靠在墙上. 一种情况是地面无摩擦, 墙面粗糙有摩擦, 另一种情况是地面有摩擦, 墙面无摩擦. 哪种情况爬梯子更安全? 为什么?}
+
+\textbf{地面有摩擦、墙面无摩擦的情况 (后者) 爬梯子更安全.}
+
+我们通过分析梯子保持静止平衡的必要条件来比较这两种情况. 设梯子质量为 $m$, 长度为 $L$, 与地面夹角为 $\theta$. 人的质量为 $M$, 处于梯子上某位置. 梯子受到的外力包括: 竖直向下的重力 ($mg$ 和 $Mg$), 地面的支持力 $N_g$ 和水平摩擦力 $f_g$, 墙面的支持力 $N_w$ 和竖直摩擦力 $f_w$.
+
+情形一: 地面无摩擦 ($\mu_g = 0$), 墙面粗糙 ($\mu_w \neq 0$).首先考虑梯子在水平方向的受力平衡条件. 梯子在水平方向只受到墙面的支持力 $N_w$ (向右, 设墙在右侧) 和地面的摩擦力 $f_g$ (向左). 平衡方程为:
+\begin{equation}
+    \sum F_x = N_w - f_g = 0
+\end{equation}
+由于题目条件给定地面无摩擦, 即 $f_g = 0$, 代入上式必然得出 $N_w = 0$.
+接着考虑墙面的摩擦力. 根据库仑摩擦定律, 最大静摩擦力与正压力成正比, 即 $f_w \le \mu_w N_w$. 既然墙面对梯子的正压力 $N_w = 0$, 那么墙面对梯子的摩擦力 $f_w$ 也必须为 0.
+这就意味着, 在这种情况下, 墙面无法对梯子施加任何作用力 (既无支持力也无摩擦力). 此时梯子仅受重力和地面的竖直支持力作用. 以梯子与地面的接触点为参考点分析力矩, 重力会产生一个使梯子倒下的非零力矩, 而体系中不存在任何能够产生反向力矩的水平力 (因为 $N_w=0$), 导致合力矩不为零.
+因此, 这种情况下梯子根本无法保持静止平衡, 无论梯子放得多么陡峭, 都会瞬间滑倒.
+
+情形二: 地面有摩擦 ($\mu_g \neq 0$), 墙面无摩擦 ($\mu_w = 0$).同样考虑水平方向平衡:
+\begin{equation}
+    \sum F_x = N_w - f_g = 0 \implies N_w = f_g
+\end{equation}
+在这种情况下, 地面可以提供静摩擦力 $f_g$. 因此, 墙面可以提供非零的支持力 $N_w$ 与之平衡.
+为了防止梯子转动倒下, 我们以地面接触点为轴分析力矩平衡 (设人距离底端 $x$):
+\begin{equation}
+    \sum \tau = N_w (L \sin\theta) - \left( m g \frac{L}{2} \cos\theta + M g x \cos\theta \right) = 0
+\end{equation}
+上式表明, 重力产生的倾覆力矩可以由墙面支持力 $N_w$ 产生的反向力矩来平衡. 只要地面足够粗糙, 能提供满足 $f_g = N_w$ 所需的静摩擦力 (即 $f_g \le \mu_g N_g$), 梯子就可以稳定地靠在墙上.
+
+综上所述, 梯子平衡的关键在于水平方向必须有力来平衡墙面的支持力, 从而允许墙面支持力存在以提供抗倾覆力矩. 只有地面有摩擦时这一条件才能满足, 因此第二种情况更安全.
+\newline
+
+
+\textbf{3 膛线 (Rifling), 又称作来福线 (来福枪即来自此名字), 是现代炮管及枪管的管膛内壁上被锻刻加工出的呈螺旋状分布的凹凸槽, 试解释这样做有什么用?}
+
+膛线的主要作用是赋予弹头高速自旋, 利用陀螺效应 (Gyroscopic Effect) 保持飞行姿态的稳定性, 从而提高射击精度和有效射程.
+
+当弹头在火药气体的推动下通过刻有螺旋状膛线的枪管时, 膛线的凸起部分嵌入弹头的软金属外壳 (或弹带), 迫使弹头在向前平动的同时绕其几何对称轴高速旋转. 离开枪口时, 弹头获得了一个沿飞行方向的巨大的自旋角动量 $\vec{L}$.
+\begin{equation}
+    \vec{L} = I \vec{\omega}
+\end{equation}
+其中 $I$ 是弹头绕对称轴的转动惯量, $\vec{\omega}$ 是自旋角速度.
+
+在飞行过程中, 弹头会受到重力、空气阻力以及侧风等外界扰动. 如果弹头不旋转 (如滑膛枪发射的球形弹丸或未稳定的长形弹丸), 空气阻力的作用中心 (压心) 通常与弹头的质心不重合. 这种微小的偏差会产生一个横向力矩 $\vec{\tau}_{\text{air}}$, 导致弹头发生翻滚 (Tumbling). 翻滚会剧烈增加空气阻力并使弹道变得不可预测.
+
+当弹头高速旋转时, 具备了较大的自旋角动量. 根据刚体转动定律:
+\begin{equation}
+    \vec{\tau}_{\text{ext}} = \frac{d\vec{L}}{dt}
+\end{equation}
+外界空气动力产生的力矩 $\vec{\tau}_{\text{ext}}$ 通常垂直于自旋轴. 对于高速旋转的刚体, 该力矩不会直接改变自旋轴的方向使其翻转, 而是引起自旋轴绕着速度矢量方向产生缓慢的动 (Precession).
+
+膛线使得弹头变成了一个高速旋转的陀螺. 巨大的角动量使得弹头的取向具有极强的“刚性”, 能够有效抵抗外界微扰力矩的影响, 始终保持头部向前. 这种姿态的稳定性减小了空气阻力 (减少弹丸横截面暴露), 保持了弹道的平直和稳定, 从而极大地提高了命中精度和射程.
+\newline
+
+
+\section*{II 教材习题}
+教材习题部分答案与教材给出答案有出入, 以本习题解析为准.
+\newline
+
+
+\textbf{TB8.2 证明: 刚体绕定轴转动时, 在垂直于轴的平面上任意两点 $A$ 和 $B$, 它们的速度 $\vec{v}_A$ 和 $\vec{v}_B$ 在 $AB$ 连接线上的分量相等. 并说明这结果的物理意义.}
+
+刚体的定义要求物体上任意两点之间的距离在运动过程中保持不变. 设 $A, B$ 两点在惯性参考系中的位置矢量分别为 $\vec{r}_A$ 和 $\vec{r}_B$. 定义由 $A$ 指向 $B$ 的位置矢量为 $\vec{r}_{AB} = \vec{r}_B - \vec{r}_A$.
+
+根据刚体刚性条件, $|\vec{r}_{AB}|$ 为常数, 即其模长的平方为常数:
+\begin{equation}
+    (\vec{r}_B - \vec{r}_A) \cdot (\vec{r}_B - \vec{r}_A) = |\vec{r}_{AB}|^2 = \text{const}
+\end{equation}
+
+对上式两边关于时间 $t$ 求导. 注意到位置矢量对时间的导数即为速度 $\frac{d\vec{r}}{dt} = \vec{v}$, 我们有:
+\begin{equation}
+    \frac{d}{dt} [(\vec{r}_B - \vec{r}_A) \cdot (\vec{r}_B - \vec{r}_A)] = 0
+\end{equation}
+
+根据标量积的求导法则:
+\begin{equation}
+    2 (\vec{r}_B - \vec{r}_A) \cdot \left( \frac{d\vec{r}_B}{dt} - \frac{d\vec{r}_A}{dt} \right) = 0
+\end{equation}
+
+即:
+\begin{equation}
+    \vec{r}_{AB} \cdot (\vec{v}_B - \vec{v}_A) = 0
+\end{equation}
+
+将标量积展开并移项, 得到:
+\begin{equation}
+    \vec{r}_{AB} \cdot \vec{v}_B = \vec{r}_{AB} \cdot \vec{v}_A
+\end{equation}
+
+设 $\vec{n}_{AB} = \frac{\vec{r}_{AB}}{|\vec{r}_{AB}|}$ 为沿 $AB$ 连线方向的单位矢量. 上式两边同时除以 $|\vec{r}_{AB}|$ (且 $|\vec{r}_{AB}| \neq 0$), 得:
+\begin{equation}
+    \vec{v}_B \cdot \vec{n}_{AB} = \vec{v}_A \cdot \vec{n}_{AB}
+\end{equation}
+
+上式左边即为速度 $\vec{v}_B$ 在 $AB$ 连线方向上的投影分量, 右边为 $\vec{v}_A$ 在 $AB$ 连线方向上的投影分量. 证毕.
+
+(注: 该证明对刚体所作的任何运动均成立, 并不局限于定轴转动, 定轴转动是其特例.)
+
+
+该结果反映了刚体不可伸长也不可压缩的运动学特征.
+
+如果 $\vec{v}_B$ 和 $\vec{v}_A$ 在 $AB$ 连线方向上的分量不相等, 意味着两点在该方向上存在相对速度 $(\vec{v}_B - \vec{v}_A) \cdot \vec{n}_{AB} \neq 0$.
+若该相对速度大于 0, 则 $AB$ 间距离将随时间增大 (刚体被拉伸);
+若该相对速度小于 0, 则 $AB$ 间距离将随时间减小 (刚体被压缩).
+唯有两点沿连线方向的速度分量相等, 才能保证两点间的距离始终保持恒定, 符合刚体的定义.
+\newline
+
+
+\textbf{TB8.3 证明: 刚体绕定轴转动时, 在垂直于轴的平面上, 任意两点 $A$、$B$ 的速度 $\vec{v}_A$、$\vec{v}_B$ 与加速度 $\vec{a}_A$、$\vec{a}_B$ 之间有下列关系: $\vec{v}_A$ 与 $\vec{a}_A$ 之间的夹角等于 $\vec{v}_B$ 与 $\vec{a}_B$ 之间的夹角.}
+
+考虑刚体绕固定轴 (设为 $z$ 轴) 转动. 对于垂直于轴的平面上任意一点 $P$ (距离转轴的距离为 $r$), 我们可以利用自然坐标系 (切向和法向) 来分析其速度与加速度矢量.
+
+设刚体在某时刻的角速度为 $\omega$, 角加速度为 $\alpha$.
+点 $P$ 的速度 $\vec{v}$ 方向沿圆周切线方向, 大小为:
+\begin{equation}
+    v = r |\omega|
+\end{equation}
+
+点 $P$ 的加速度 $\vec{a}$ 可以分解为切向分量 $\vec{a}_{\tau}$ 和法向 (向心) 分量 $\vec{a}_n$:
+\begin{equation}
+    \vec{a} = \vec{a}_{\tau} + \vec{a}_n
+\end{equation}
+
+其中切向加速度的大小为 $a_{\tau} = r |\alpha|$, 方向平行于速度 $\vec{v}$ (当 $\alpha$ 与 $\omega$ 同号时同向, 异号时反向); 法向加速度的大小为 $a_n = r \omega^2$, 方向始终指向圆心 (垂直于速度 $\vec{v}$).
+
+设速度 $\vec{v}$ 与加速度 $\vec{a}$ 之间的夹角为 $\theta$ ($0 \le \theta \le \pi$).
+我们可以通过计算该夹角的三角函数值来确定其大小. 考察加速度矢量 $\vec{a}$ 在速度矢量 $\vec{v}$ 方向上的投影与垂直方向上的投影之比 (即余切值 $\cot \theta$):
+\begin{equation}
+    \cot \theta = \frac{\text{加速度的切向分量 (带符号)}}{\text{加速度的法向分量}} = \frac{r \alpha}{r \omega^2} = \frac{\alpha}{\omega^2}
+\end{equation}
+
+或者计算夹角的余弦值:
+\begin{equation}
+    \cos \theta = \frac{\vec{v} \cdot \vec{a}}{|\vec{v}| |\vec{a}|} = \frac{v a_{\tau} (\text{sign})}{v \sqrt{a_{\tau}^2 + a_n^2}} = \frac{r \alpha}{\sqrt{(r\alpha)^2 + (r\omega^2)^2}} = \frac{\alpha}{\sqrt{\alpha^2 + \omega^4}}
+\end{equation}
+
+观察上述结果可知, $\vec{v}$ 与 $\vec{a}$ 之间夹角 $\theta$ 的数值仅取决于刚体转动的角速度 $\omega$ 和角加速度 $\alpha$.
+对于刚体上任意两点 $A$ 和 $B$, 在同一时刻, 它们具有相同的 $\omega$ 和 $\alpha$. 因此:
+\begin{equation}
+    \cot \theta_A = \frac{\alpha}{\omega^2} = \cot \theta_B \implies \theta_A = \theta_B
+\end{equation}
+
+这就证明了任意两点的速度与加速度之间的夹角相等. 这一结论说明了刚体定轴转动时运动场的几何相似性: 不同半径处的运动状态在局部几何结构上是相似的, 仅在尺度 (由 $r$ 决定) 上按比例缩放.
+\newline
+
+
+\textbf{TB8.4 下列均匀刚体的质量都是 $m$, 分别求它们对给定轴的转动惯量:}
+
+\textbf{(1) 横截面为矩形的圆环, 外径为 $R_1$、内径为 $R_2$, 对几何轴;}
+
+该几何体实际上是一个空心圆柱体. 设其高度为 $h$, 密度为 $\rho$. 题设外径为 $R_1$, 内径为 $R_2$ ($R_1 > R_2$). 刚体的总质量 $m$ 与密度的关系为 $m = \rho V = \rho \pi (R_1^2 - R_2^2) h$.
+
+我们选取一个半径为 $r$, 厚度为 $dr$ 的薄圆柱壳作为微元. 该微元的体积为 $dV = 2\pi r h dr$, 质量为 $dm = \rho dV = 2\pi \rho h r dr$. 由于微元上各点到轴的距离均为 $r$, 其转动惯量为 $dI = r^2 dm = 2\pi \rho h r^3 dr$. 对整个圆环积分, 积分限从 $R_2$ 到 $R_1$:
+\begin{equation}
+    I = \int_{R_2}^{R_1} 2\pi \rho h r^3 dr = 2\pi \rho h \left[ \frac{r^4}{4} \right]_{R_2}^{R_1} = \frac{1}{2} \pi \rho h (R_1^4 - R_2^4)
+\end{equation}
+
+利用 $a^4 - b^4 = (a^2 - b^2)(a^2 + b^2)$ 展开分子, 并代入质量 $m$ 的表达式消去 $\rho$:
+\begin{equation}
+    I = \frac{1}{2} \left[ \rho \pi (R_1^2 - R_2^2) h \right] (R_1^2 + R_2^2) = \frac{1}{2} m (R_1^2 + R_2^2)
+\end{equation}
+\newline
+
+
+\textbf{(2) 球壳, 内外半径分别为 $R_1$ 和 $R_2$, 对过中心的轴;}
+
+设球壳密度为 $\rho$, 内半径为 $R_1$, 外半径为 $R_2$. 质量 $m = \rho \frac{4}{3} \pi (R_2^3 - R_1^3)$.
+利用补偿法计算转动惯量. 一个半径为 $R$, 质量为 $M$ 的实心球体对直径的转动惯量为 $\frac{2}{5} M R^2$. 我们可以将球壳视为一个密度为 $\rho$ 的大实心球 (半径 $R_2$) 挖去一个同密度的小实心球 (半径 $R_1$).
+\begin{equation}
+    I = I_{\text{outer}} - I_{\text{inner}} = \frac{2}{5} m_{\text{outer}} R_2^2 - \frac{2}{5} m_{\text{inner}} R_1^2
+\end{equation}
+
+其中 $m_{\text{outer}} = \rho \frac{4}{3} \pi R_2^3$, $m_{\text{inner}} = \rho \frac{4}{3} \pi R_1^3$. 代入上式:
+\begin{equation}
+    I = \frac{2}{5} \rho \frac{4}{3} \pi (R_2^5 - R_1^5)
+\end{equation}
+
+利用总质量 $m$ 的表达式 $m = \rho \frac{4}{3} \pi (R_2^3 - R_1^3)$, 将 $\rho$ 替换为 $m / [\frac{4}{3} \pi (R_2^3 - R_1^3)]$, 得到:
+\begin{equation}
+    I = \frac{2}{5} m \frac{R_2^5 - R_1^5}{R_2^3 - R_1^3}
+\end{equation}
+\newline
+
+
+\textbf{(3) 矩形薄板, 长为 $a$、宽为 $b$, 对垂直于板面且过中心的轴;}
+
+建立直角坐标系, 原点在板中心, $x$ 轴平行于 $a$ 边, $y$ 轴平行于 $b$ 边. 面密度 $\sigma = \frac{m}{ab}$. 转轴为 $z$ 轴.
+根据垂直轴定理 (对于薄板), $I_z = I_x + I_y$. 或者直接积分:
+\begin{equation}
+    I_z = \int r^2 dm = \int_{-b/2}^{b/2} \int_{-a/2}^{a/2} (x^2 + y^2) \sigma dx dy
+\end{equation}
+
+积分项可以拆分:
+\begin{equation}
+    I_z = \sigma \left( \int_{-b/2}^{b/2} dy \int_{-a/2}^{a/2} x^2 dx + \int_{-a/2}^{a/2} dx \int_{-b/2}^{b/2} y^2 dy \right)
+\end{equation}
+
+计算结果为:
+\begin{equation}
+    I_z = \sigma \left( b \cdot \frac{a^3}{12} + a \cdot \frac{b^3}{12} \right) = \frac{m}{ab} \left( \frac{a^3 b + a b^3}{12} \right) = \frac{1}{12} m (a^2 + b^2)
+\end{equation}
+\newline
+
+
+\textbf{(4) 矩形薄板, 长为 $a$、宽为 $b$, 对过中心且平行于一边 $a$ 的轴;}
+
+转轴通过中心且平行于 $a$ 边 (即 $x$ 轴). 此时转轴与 $y$ 轴垂直. 薄板上任意一点到转轴的垂直距离仅取决于其 $y$ 坐标.
+这就等效于求一个长度为 $b$, 质量为 $m$ 的细棒绕其中心轴的转动惯量.
+或者通过积分计算:
+\begin{equation}
+    I = \int y^2 dm = \int_{-b/2}^{b/2} y^2 (\sigma a dy) = \frac{m}{b} \left[ \frac{y^3}{3} \right]_{-b/2}^{b/2} = \frac{1}{12} m b^2
+\end{equation}
+\newline
+
+
+\textbf{(5) 长方体, 长为 $a$、宽为 $b$、高为 $c$, 对过中心且平行于 $c$ 边的轴;}
+
+转轴通过中心且平行于 $c$ 边 (设为 $z$ 轴). 由于物体是均匀的, 且轴平行于 $z$ 轴, 物体内部所有质量微元在 $z$ 方向上的分布不影响其到 $z$ 轴的距离 $r = \sqrt{x^2 + y^2}$.
+我们可以将该长方体沿 $z$ 轴 ``压缩'' 成一个质量为 $m$, 边长为 $a$ 和 $b$ 的矩形薄板. 根据第 (3) 小题的结论, 该长方体对 $z$ 轴的转动惯量与同样的薄板对垂直轴的转动惯量形式一致:
+\begin{equation}
+    I = \frac{1}{12} m (a^2 + b^2)
+\end{equation}
+\newline
+
+
+\textbf{(6) 细棒, 对过中心且垂直于棒的轴, 棒长 $l$;}
+
+设棒长为 $l$, 线密度 $\lambda = m/l$. 建立坐标系, 原点在中心, 棒沿 $x$ 轴放置.
+\begin{equation}
+    I = \int_{-l/2}^{l/2} x^2 dm = \int_{-l/2}^{l/2} x^2 \lambda dx = \lambda \left[ \frac{x^3}{3} \right]_{-l/2}^{l/2} = \frac{m}{l} \frac{2 (l/2)^3}{3} = \frac{1}{12} m l^2
+\end{equation}
+\newline
+
+
+\textbf{(7) 细棒, 对过一端且垂直于棒的轴, 棒长 $l$;}
+
+方法一: 平行轴定理.
+已知绕质心轴的转动惯量 $I_C = \frac{1}{12} m l^2$, 质心到端点的距离 $d = l/2$.
+\begin{equation}
+    I = I_C + m d^2 = \frac{1}{12} m l^2 + m \left(\frac{l}{2}\right)^2 = \left( \frac{1}{12} + \frac{1}{4} \right) m l^2 = \frac{1}{3} m l^2
+\end{equation}
+
+方法二: 直接积分. 坐标原点设在棒的一端.
+\begin{equation}
+    I = \int_{0}^{l} x^2 \lambda dx = \frac{m}{l} \left[ \frac{x^3}{3} \right]_{0}^{l} = \frac{1}{3} m l^2
+\end{equation}
+\newline
+
+
+\textbf{(8) 细棒, 对过一端且与棒成 $\alpha$ 角的轴, 棒长 $l$.}
+
+设棒沿 $x$ 轴放置, 原点在一端, 范围 $x \in [0, l]$. 转轴过原点, 与 $x$ 轴夹角为 $\alpha$.
+对于棒上坐标为 $x$ 的点, 它到转轴的垂直距离为 $r = x \sin \alpha$.
+质量微元 $dm = \lambda dx = (m/l) dx$.
+\begin{equation}
+    I = \int r^2 dm = \int_{0}^{l} (x \sin \alpha)^2 \frac{m}{l} dx
+\end{equation}
+
+由于 $\alpha$ 是常数, $\sin^2 \alpha$ 提到积分号外:
+\begin{equation}
+    I = \frac{m \sin^2 \alpha}{l} \int_{0}^{l} x^2 dx = \frac{m \sin^2 \alpha}{l} \cdot \frac{l^3}{3} = \frac{1}{3} m l^2 \sin^2 \alpha
+\end{equation}
+\newline
+
+
+\textbf{TB8.6 一块边长为 $a$ 和 $b$ 的均匀矩形薄板, 质量为 $m$.}
+
+\textbf{(1)中间挖去半径为 $r$ 的圆形;}
+
+\textbf{(2)一角上挖去边长为 $c$ 的正方形.}
+
+\textbf{分别求它们对于过中心且垂直于板的轴的转动惯量.}
+
+本题采用叠加原理求解. 设完整的均匀矩形薄板质量为 $m$, 边长为 $a$ 和 $b$, 则其面密度为 $\sigma = \frac{m}{ab}$. 完整薄板绕过中心 $O$ 且垂直于板面的轴 ($z$ 轴) 的转动惯量为:
+\begin{equation}
+    I_0 = \frac{1}{12} m (a^2 + b^2)
+\end{equation}
+挖去部分的转动惯量需从总转动惯量中减去.
+
+\textbf{(1) 中间挖去半径为 $r$ 的圆形}
+
+挖去部分的形状为圆形, 半径为 $r$, 其几何中心与矩形板中心 $O$ 重合.
+首先计算挖去圆盘的质量 $m_1$:
+\begin{equation}
+    m_1 = \sigma \cdot \pi r^2 = \frac{m}{ab} \pi r^2
+\end{equation}
+
+该圆盘绕通过其中心 $O$ 的垂直轴的转动惯量 $I_1$ 为:
+\begin{equation}
+    I_1 = \frac{1}{2} m_1 r^2 = \frac{1}{2} \left( \frac{m \pi r^2}{ab} \right) r^2 = \frac{\pi m r^4}{2 ab}
+\end{equation}
+
+剩余部分的转动惯量 $I$ 等于完整矩形板的转动惯量减去挖去圆盘的转动惯量:
+\begin{equation}
+    I = I_0 - I_1 = \frac{1}{12} m (a^2 + b^2) - \frac{\pi m r^4}{2 ab} = m \left[ \frac{a^2 + b^2}{12} - \frac{\pi r^4}{2 ab} \right]
+\end{equation}
+
+\textbf{(2) 一角上挖去边长为 $c$ 的正方形}
+
+设挖去的是矩形板右上角的正方形, 边长为 $c$.
+首先计算挖去正方形的质量 $m_2$:
+\begin{equation}
+    m_2 = \sigma \cdot c^2 = \frac{m}{ab} c^2
+\end{equation}
+
+我们需要确定挖去正方形的中心 $O'$ 的位置. 建立坐标系, 设矩形板中心 $O$ 为原点 $(0, 0)$. 矩形板右上角的顶点坐标为 $(a/2, b/2)$.
+被挖去的正方形位于 $x \in [a/2 - c, a/2]$ 和 $y \in [b/2 - c, b/2]$ 的区域内. 其中心 $O'$ 的坐标为:
+\begin{equation}
+    \begin{cases}
+        x_{c} = \frac{a}{2} - \frac{c}{2} = \frac{a-c}{2} \\
+        y_{c} = \frac{b}{2} - \frac{c}{2} = \frac{b-c}{2}
+    \end{cases}
+\end{equation}
+
+中心 $O'$ 到原点 $O$ 的距离平方 $d^2$ 为:
+\begin{equation}
+    d^2 = x_{c}^2 + y_{c}^2 = \left( \frac{a-c}{2} \right)^2 + \left( \frac{b-c}{2} \right)^2
+\end{equation}
+
+接下来计算挖去的正方形对原点轴的转动惯量 $I_2$.
+该正方形绕其自身质心轴 (垂直于板面) 的转动惯量 $I_{2, \text{cm}}$ 为:
+\begin{equation}
+    I_{2, \text{cm}} = \frac{1}{12} m_2 (c^2 + c^2) = \frac{1}{6} m_2 c^2
+\end{equation}
+
+根据平行轴定理, 该正方形绕矩形板中心 $O$ 的转动惯量 $I_2$ 为:
+\begin{equation}
+    I_2 = I_{2, \text{cm}} + m_2 d^2 = \frac{1}{6} m_2 c^2 + m_2 \left[ \left( \frac{a-c}{2} \right)^2 + \left( \frac{b-c}{2} \right)^2 \right]
+\end{equation}
+
+将 $m_2 = \frac{m c^2}{ab}$ 代入并整理:
+\begin{equation}
+    \begin{aligned}
+        I_2 &= m_2 \left[ \frac{c^2}{6} + \frac{(a-c)^2 + (b-c)^2}{4} \right] \\
+        &= \frac{m c^2}{ab} \cdot \frac{2c^2 + 3(a-c)^2 + 3(b-c)^2}{12}
+    \end{aligned}
+\end{equation}
+
+最终, 剩余部分的转动惯量 $I$ 为:
+\begin{equation}
+    \begin{aligned}
+        I &= I_0 - I_2 \\
+        &= \frac{1}{12} m (a^2 + b^2) - \frac{m c^2}{12 ab} \left[ 2c^2 + 3(a-c)^2 + 3(b-c)^2 \right] \\
+        &= \frac{m}{12} \left\{ (a^2 + b^2) - \frac{c^2}{ab} \left[ 2c^2 + 3(a-c)^2 + 3(b-c)^2 \right] \right\} \\
+        &= \frac{m}{12ab}(a^3b+ab^3-3a^2c^2+6ac^3-3b^2c^2+6bc^3-8c^4)
+    \end{aligned}
+\end{equation}
+\newline
+
+
+\textbf{TB8.9 一根长为 $2l$、质量为 $2M$ 的均匀细杆, 可以绕过中点的固定轴在水平面内自由转动, 在离中心 $l/3$ 处各套有两个质量均为 $m$ 的小珠子. 开始时杆的转动角速度为 $\omega_0$, 而两小珠相对杆静止. 当释放小珠后, 小珠将沿杆无摩擦地向两端滑动. 试问:}
+
+\textbf{(1) 当小珠滑至杆端时, 杆的角速度为多大?}
+
+取细杆和两个小珠组成的系统为研究对象.
+\begin{itemize}
+    \item 外力:重力与轴的支持力平衡; 轴对杆的水平约束力有力无力矩 (力矩为 0). 忽略空气阻力.
+    \item 角动量守恒:系统所受合外力矩为 0, 故系统绕固定转轴 ($z$ 轴) 的角动量 $L$ 守恒.
+    \item 机械能守恒:只有保守内力或不做功的约束力作用 (无摩擦), 故系统机械能 $E$ 守恒.
+\end{itemize}
+
+初始状态,杆长 $2l$, 质量 $2M$, 珠子位置 $r_0 = l/3$, 初始角速度 $\omega_0$.
+杆的转动惯量:
+\begin{equation}
+    J_{\text{rod}} = \frac{1}{12} (2M) (2l)^2 = \frac{2}{3} M l^2
+\end{equation}
+
+两个小珠的初始转动惯量:
+\begin{equation}
+    J_{\text{beads}, 0} = 2 \cdot m r_0^2 = 2m \left( \frac{l}{3} \right)^2 = \frac{2}{9} m l^2
+\end{equation}
+
+系统的初始总转动惯量:
+\begin{equation}
+    J_0 = J_{\text{rod}} + J_{\text{beads}, 0} = \frac{2}{3} M l^2 + \frac{2}{9} m l^2 = \frac{2}{9} l^2 (3M + m)
+\end{equation}
+
+终末状态,小珠滑至杆端, 位置 $r_1 = l$, 此时杆的角速度设为 $\omega_1$.
+两个小珠的终末转动惯量:
+\begin{equation}
+    J_{\text{beads}, 1} = 2 \cdot m l^2 = 2 m l^2
+\end{equation}
+
+系统的终末总转动惯量:
+\begin{equation}
+    J_1 = J_{\text{rod}} + J_{\text{beads}, 1} = \frac{2}{3} M l^2 + 2 m l^2 = \frac{2}{3} l^2 (M + 3m)
+\end{equation}
+
+由角动量守恒定律 $L_0 = L_1$:
+\begin{equation}
+    J_0 \omega_0 = J_1 \omega_1
+\end{equation}
+
+代入转动惯量表达式:
+\begin{equation}
+    \left[ \frac{2}{9} l^2 (3M + m) \right] \omega_0 = \left[ \frac{2}{3} l^2 (M + 3m) \right] \omega_1
+\end{equation}
+
+解得:
+\begin{equation}
+    \omega_1 = \frac{\frac{2}{9}(3M + m)}{\frac{2}{3}(M + 3m)} \omega_0 = \frac{1}{3} \frac{3M + m}{M + 3m} \omega_0
+\end{equation}
+\newline
+
+
+\textbf{(2) 当小珠滑至杆端时, 小珠相对杆的速度为多大?}
+
+小珠相对杆的速度即为其在旋转系中的径向速度 $v_r$.
+由机械能守恒定律 $E_0 = E_1$.
+初始动能 (纯转动):
+\begin{equation}
+    E_0 = \frac{1}{2} J_0 \omega_0^2
+\end{equation}
+
+终末动能 (杆转动 + 珠子转动 + 珠子径向运动):
+\begin{equation}
+    E_1 = \frac{1}{2} J_{\text{rod}} \omega_1^2 + 2 \times \frac{1}{2} m (v_t^2 + v_r^2) = \frac{1}{2} J_1 \omega_1^2 + m v_r^2
+\end{equation}
+
+其中珠子的切向速度 $v_t = \omega_1 l$ 已包含在 $\frac{1}{2} J_1 \omega_1^2$ 项中.
+列方程:
+\begin{equation}
+    \frac{1}{2} J_0 \omega_0^2 = \frac{1}{2} J_1 \omega_1^2 + m v_{\text{rel}}^2
+\end{equation}
+
+代入 $\omega_1 = \frac{J_0}{J_1} \omega_0$:
+\begin{equation}
+    \begin{aligned}
+        m v_{\text{rel}}^2 &= \frac{1}{2} J_0 \omega_0^2 - \frac{1}{2} J_1 \left( \frac{J_0}{J_1} \omega_0 \right)^2 \\
+        &= \frac{1}{2} J_0 \omega_0^2 \left( 1 - \frac{J_0}{J_1} \right)
+    \end{aligned}
+\end{equation}
+
+计算比值差:
+\begin{equation}
+    1 - \frac{J_0}{J_1} = 1 - \frac{1}{3} \frac{3M + m}{M + 3m} = \frac{3(M + 3m) - (3M + m)}{3(M + 3m)} = \frac{8m}{3(M + 3m)}
+\end{equation}
+
+代入计算 $v_{\text{rel}}$:
+\begin{equation}
+    \begin{aligned}
+        m v_{\text{rel}}^2 &= \frac{1}{2} \left[ \frac{2}{9} l^2 (3M + m) \right] \omega_0^2 \cdot \left[ \frac{8m}{3(M + 3m)} \right] \\
+        v_{\text{rel}}^2 &= \frac{8}{27} l^2 \omega_0^2 \frac{3M + m}{M + 3m}
+    \end{aligned}
+\end{equation}
+
+故相对速度大小为:
+\begin{equation}
+    v_{\text{rel}} = \sqrt{\frac{8(3M + m)}{27(M + 3m)}} l \omega_0 = \frac{2\sqrt{2}}{3\sqrt{3}} \sqrt{\frac{3M + m}{M + 3m}} l \omega_0
+\end{equation}
+\newline
+
+
+\textbf{(3) 当小珠滑离杆时, 小珠的速度为多大?}
+
+小珠对地的绝对速度 $\vec{v}$ 是牵连速度 (切向) 和相对速度 (径向) 的矢量和. 此时两者垂直.
+\begin{equation}
+    v = \sqrt{v_t^2 + v_r^2} = \sqrt{(\omega_1 l)^2 + v_{\text{rel}}^2}
+\end{equation}
+
+代入前两问的结果:
+\begin{equation}
+    \begin{aligned}
+        v^2 &= \left[ \frac{1}{3} \frac{3M + m}{M + 3m} \omega_0 l \right]^2 + \frac{8}{27} \frac{3M + m}{M + 3m} \omega_0^2 l^2 \\
+        &= \frac{\omega_0^2 l^2 (3M + m)}{9(M + 3m)} \left[ \frac{3M + m}{M + 3m} + \frac{8}{3} \right] \\
+        &= \frac{\omega_0^2 l^2 (3M + m)}{9(M + 3m)} \left[ \frac{3(3M + m) + 8(M + 3m)}{3(M + 3m)} \right] \\
+        &= \frac{\omega_0^2 l^2 (3M + m)}{27(M + 3m)^2} [ 9M + 3m + 8M + 24m ] \\
+        &= \frac{\omega_0^2 l^2 (3M + m)(17M + 27m)}{27(M + 3m)^2}
+    \end{aligned}
+\end{equation}
+
+故小珠的绝对速度大小为:
+\begin{equation}
+    v = \frac{\omega_0 l}{9(M + 3m)} \sqrt{3(3M + m)(17M + 27m)}
+\end{equation}
+\newline
+
+
+\textbf{TB8.14 一个如图T8.14所示的装置, 其中 $m_1$、$m_2$、$M_1$、$M_2$、$R_1$ 和 $R_2$ 都已知, 且 $m_1 > m_2$, 滑轮都是圆盘形的. 设绳子长度不变, 绳子的质量以及滑轮轴上的摩擦力均可不计, 绳子与滑轮间不打滑, 滑轮质量均匀分布. 求 $m_2$ 的加速度 $a$ 及绳子的张力 $T_2$、$T_3$.}
+\begin{figure}
+  \centering
+  \includegraphics[width=0.4\textwidth]{Fig/T8.14.png}
+  \caption*{图T8.14}
+\end{figure}
+
+根据图T8.14, 系统配置如下:
+\begin{itemize}
+    \item 右侧物体 $m_1$ 悬挂在绳端, 受张力 $T_1$ 作用;
+    \item 左侧物体 $m_2$ 悬挂在绳端, 受张力 $T_2$ 作用;
+    \item 中间连接两个滑轮的水平绳段张力为 $T_3$;
+    \item 滑轮 $M_1$ (右侧) 和 $M_2$ (左侧) 均为质量均匀分布的圆盘, 其转动惯量分别为 $I_1 = \frac{1}{2} M_1 R_1^2$ 和 $I_2 = \frac{1}{2} M_2 R_2^2$.
+\end{itemize}
+
+由于已知 $m_1 > m_2$, 系统将沿 $m_1$ 下降、$m_2$ 上升的方向运动. 此时:
+\begin{itemize}
+    \item 物体 $m_1$ 向下加速, 加速度为 $a$;
+    \item 物体 $m_2$ 向上加速, 加速度为 $a$;
+    \item 右滑轮 $M_1$ 顺时针加速转动, 边缘切向加速度为 $a$, 角加速度 $\alpha_1 = a / R_1$;
+    \item 左滑轮 $M_2$ 顺时针加速转动, 边缘切向加速度为 $a$, 角加速度 $\alpha_2 = a / R_2$.
+\end{itemize}
+
+对系统的各个部分分别应用牛顿第二定律和刚体定轴转动定律:
+
+对物体 $m_1$ (向下加速), 受到重力 $m_1 g$ 和向上张力 $T_1$.
+\begin{equation}
+    m_1 g - T_1 = m_1 a \implies T_1 = m_1(g - a)
+\end{equation}
+
+对右滑轮 $M_1$ (顺时针转动), 受到竖直向下的张力 $T_1$ (产生动力矩) 和水平向左的张力 $T_3$ (产生阻力矩).
+\begin{equation}
+    (T_1 - T_3) R_1 = I_1 \alpha_1 = \left( \frac{1}{2} M_1 R_1^2 \right) \frac{a}{R_1} \implies T_1 - T_3 = \frac{1}{2} M_1 a
+\end{equation}
+
+对左滑轮 $M_2$ (顺时针转动), 受到水平向右的张力 $T_3$ (产生动力矩) 和竖直向下的张力 $T_2$ (产生阻力矩).
+\begin{equation}
+    (T_3 - T_2) R_2 = I_2 \alpha_2 = \left( \frac{1}{2} M_2 R_2^2 \right) \frac{a}{R_2} \implies T_3 - T_2 = \frac{1}{2} M_2 a
+\end{equation}
+
+对物体 $m_2$ (向上加速), 受到重力 $m_2 g$ 和向上张力 $T_2$.
+\begin{equation}
+    T_2 - m_2 g = m_2 a \implies T_2 = m_2(g + a)
+\end{equation}
+
+我们将上述四个方程相加, 所有的内部张力 $T_1, T_3, T_2$ 将相互抵消:
+\begin{equation}
+    (m_1 g - T_1) + (T_1 - T_3) + (T_3 - T_2) + (T_2 - m_2 g) = \left( m_1 + \frac{1}{2} M_1 + \frac{1}{2} M_2 + m_2 \right) a
+\end{equation}
+
+整理得:
+\begin{equation}
+    (m_1 - m_2) g = \left( m_1 + m_2 + \frac{1}{2} M_1 + \frac{1}{2} M_2 \right) a
+\end{equation}
+
+求解加速度 $a$:
+\begin{equation}
+    a = \frac{(m_1 - m_2)g}{m_1 + m_2 + \frac{1}{2}(M_1 + M_2)}
+\end{equation}
+这与阿特伍德机的广义形式一致, 分母包含了平动惯量和折算的转动惯量.
+
+求解张力 $T_2$, 将 $a$ 的表达式代入方程 (70) $T_2 = m_2(g + a)$:
+\begin{equation}
+    \begin{aligned}
+        T_2 &= m_2 g \left[ 1 + \frac{m_1 - m_2}{m_1 + m_2 + \frac{1}{2}(M_1 + M_2)} \right] \\
+        &= m_2 g \frac{(m_1 + m_2 + \frac{1}{2}M_1 + \frac{1}{2}M_2) + (m_1 - m_2)}{m_1 + m_2 + \frac{1}{2}(M_1 + M_2)} \\
+        &= \frac{m_2 g \left( 2m_1 + \frac{1}{2}M_1 + \frac{1}{2}M_2 \right)}{m_1 + m_2 + \frac{1}{2}(M_1 + M_2)}
+    \end{aligned}
+\end{equation}
+
+分子分母同乘 2 以化简形式:
+\begin{equation}
+    T_2 = \frac{m_2 g (4m_1 + M_1 + M_2)}{2m_1 + 2m_2 + M_1 + M_2}
+\end{equation}
+
+求解张力 $T_3$, 根据方程 (69), $T_3 = T_2 + \frac{1}{2} M_2 a$.
+我们代入 $T_2 = m_2(g+a)$ 的形式进行推导:
+\begin{equation}
+    T_3 = m_2(g+a) + \frac{1}{2} M_2 a = m_2 g + \left( m_2 + \frac{1}{2} M_2 \right) a
+\end{equation}
+
+令分母 $D = m_1 + m_2 + \frac{1}{2}(M_1 + M_2)$.
+\begin{equation}
+    \begin{aligned}
+        T_3 &= m_2 g + \left( m_2 + \frac{1}{2} M_2 \right) \frac{(m_1 - m_2)g}{D} \\
+        &= \frac{g}{D} \left[ m_2 D + \left( m_2 + \frac{1}{2} M_2 \right) (m_1 - m_2) \right]
+    \end{aligned}
+\end{equation}
+
+展开分子项:
+\begin{equation}
+    \begin{aligned}
+        \text{分子} &= m_2 \left( m_1 + m_2 + \frac{1}{2}M_1 + \frac{1}{2}M_2 \right) + \left( m_1 m_2 - m_2^2 + \frac{1}{2} m_1 M_2 - \frac{1}{2} m_2 M_2 \right) \\
+        &= m_1 m_2 + m_2^2 + \frac{1}{2} m_2 M_1 + \frac{1}{2} m_2 M_2 + m_1 m_2 - m_2^2 + \frac{1}{2} m_1 M_2 - \frac{1}{2} m_2 M_2 \\
+        &= 2 m_1 m_2 + \frac{1}{2} m_2 M_1 + \frac{1}{2} m_1 M_2
+    \end{aligned}
+\end{equation}
+
+将分子代回 $T_3$ 的表达式, 并将分子分母同乘 2:
+\begin{equation}
+    T_3 = \frac{g (4 m_1 m_2 + m_2 M_1 + m_1 M_2)}{2 m_1 + 2 m_2 + M_1 + M_2}
+\end{equation}
+\newline
+
+
+\textbf{TB8.21 一质量为 $M$ 的均匀正立方体 $A$ 斜靠在光滑的竖直墙上, $A$ 与地面之间的摩擦力刚好足以阻止它滑动. 求 $\mu$ 与 $\theta$ 的关系, $\mu$ 是 $A$ 与地面之间的静摩擦系数, $\theta$ 是 $A$ 的一边与水平的夹角, 如图T8.21所示.}
+\begin{figure}
+  \centering
+  \includegraphics[width=0.25\textwidth]{Fig/T8.21.png}
+  \caption*{图T8.21}
+\end{figure}
+
+设正立方体的边长为 $L$. 由于问题是二维平面的平衡问题, 我们考察其侧面正方形.
+\begin{itemize}
+  \item 重力 $G = Mg$, 作用于正方形的几何中心 (质心) $C$, 方向竖直向下.
+  \item 墙面的支持力 $N_w$, 作用于立方体与墙接触的顶点 $Q$, 方向水平向左 (因墙面光滑, 无摩擦).
+  \item 地面的支持力 $N_f$, 作用于立方体与地面接触的顶点 $P$, 方向竖直向上.
+  \item 地面的静摩擦力 $f$, 作用于顶点 $P$, 方向水平向右 (平衡墙面的水平推力).
+\end{itemize}
+
+题目指出“摩擦力刚好足以阻止它滑动”, 这意味着摩擦力达到最大静摩擦力:
+\begin{equation}
+    f = \mu N_f
+\end{equation}
+
+根据刚体静力平衡条件: 合外力为零, 合外力矩为零.
+
+力的平衡, 水平方向 ($\sum F_x = 0$):
+\begin{equation}
+    f - N_w = 0 \implies N_w = f
+\end{equation}
+
+竖直方向 ($\sum F_y = 0$):
+\begin{equation}
+    N_f - Mg = 0 \implies N_f = Mg
+\end{equation}
+
+结合摩擦力公式, 可得墙面支持力的大小:
+\begin{equation}
+    N_w = \mu N_f = \mu Mg
+\end{equation}
+
+选取与地面接触的点 $P$ 为参考点 (支点), 计算力矩平衡 ($\sum \tau_P = 0$).
+此时, $N_f$ 和 $f$ 的作用点都在 $P$, 力臂为 0, 力矩为 0. 只需考虑重力 $Mg$ 和墙面支持力 $N_w$.
+
+设 $P$ 为原点 $(0,0)$. 立方体底边与水平面夹角为 $\theta$.
+\begin{itemize}
+    \item 墙面接触点 $Q$ 的位置:
+    点 $Q$ 是正方形沿底边向上的顶点. 该边长为 $L$, 与水平夹角 $\theta$.
+    点 $Q$ 的高度 (即 $N_w$ 关于 $P$ 的垂直力臂) 为:
+    \begin{equation}
+        h_Q = L \sin\theta
+    \end{equation}
+    墙面支持力 $N_w$ 水平向左, 产生逆时针力矩: $\tau_w = N_w \cdot L \sin\theta$.
+
+    \item 质心 $C$ 的位置:
+    质心 $C$ 位于正方形的中心. 我们可以通过矢量叠加找到 $C$ 点相对于 $P$ 的水平位置 $x_C$.
+    矢量 $\vec{PC}$ 等于沿底边 $PQ$ 走 $L/2$, 再沿垂直于 $PQ$ 的边 (指向正方形内部) 走 $L/2$.
+    \begin{itemize}
+        \item 沿 $PQ$ 方向的单位矢量: $(\cos\theta, \sin\theta)$.
+        \item 垂直于 $PQ$ 方向 (向左上) 的单位矢量: $(-\sin\theta, \cos\theta)$.
+    \end{itemize}
+    故质心 $C$ 的水平坐标 $x_C$ 为:
+    \begin{equation}
+        x_C = \frac{L}{2} \cos\theta + \frac{L}{2} (-\sin\theta) = \frac{L}{2} (\cos\theta - \sin\theta)
+    \end{equation}
+    重力 $Mg$ 竖直向下, 产生\textbf{顺时针}力矩 (假定 $\theta < 45^\circ$, 此时 $x_C > 0$, 重力试图使物体倒向地面): $\tau_g = Mg \cdot x_C$.
+\end{itemize}
+
+根据力矩平衡方程 $\tau_w = \tau_g$:
+\begin{equation}
+    N_w (L \sin\theta) = Mg \left[ \frac{L}{2} (\cos\theta - \sin\theta) \right]
+\end{equation}
+
+将 $N_w = \mu Mg$ 代入上式:
+\begin{equation}
+    (\mu Mg) L \sin\theta = \frac{1}{2} Mg L (\cos\theta - \sin\theta)
+\end{equation}
+
+消去两边的 $Mg L$ (且 $Mg L \neq 0$):
+\begin{equation}
+    \mu \sin\theta = \frac{1}{2} (\cos\theta - \sin\theta)
+\end{equation}
+
+解出 $\mu$:
+\begin{equation}
+    \mu = \frac{\cos\theta - \sin\theta}{2 \sin\theta}
+\end{equation}
+
+或者写成余切函数形式:
+\begin{equation}
+    \mu = \frac{1}{2} (\cot\theta - 1),\quad \tan\theta = \frac{1}{1 + 2\mu}
+\end{equation}
+
+这就是在临界平衡状态下, 静摩擦系数 $\mu$ 与角度 $\theta$ 应满足的关系.
+(注: 该结果成立的条件是 $\cos\theta > \sin\theta$, 即 $\theta < 45^\circ$. 若 $\theta \ge 45^\circ$, 质心位于支点 $P$ 的左侧或正上方, 立方体不会向墙面倒, 墙面支持力为零, 也就无需摩擦力平衡.)
+\newline
+
+
+\textbf{TB8.28 证明: 要使一物体在斜面上滚动时不打滑, 滑动摩擦系数 $\mu$ 必须满足$\mu \geqslant \frac{\tan \alpha}{\frac{MR^2}{I_C} + 1}$, 其中 $\alpha$ 是斜面倾角, $I_C$ 是该物体绕质心的转动惯量, $R$ 是滚动半径, $M$ 是物体的质量.}
+\begin{figure}
+  \centering
+  \includegraphics[width=0.35\textwidth]{Fig/T8.28.png}
+  \caption*{图T8.28}
+\end{figure}
+
+如图T8.28所示, 物体在斜面上受三个力作用:
+\begin{itemize}
+    \item 重力 $Mg$, 竖直向下;
+    \item 斜面支持力 $N$, 垂直于斜面向上;
+    \item 静摩擦力 $f$, 沿斜面向上 (阻碍接触点相对斜面向下产生的滑动趋势).
+\end{itemize}
+
+建立坐标系: 沿斜面向下为 $x$ 轴正方向, 垂直斜面向上为 $y$ 轴正方向.
+设质心沿斜面向下的加速度为 $a_{cm}$, 绕质心转动的角加速度为 $\beta$.
+
+根据牛顿第二定律 (平动):
+\begin{equation}
+    x \text{ 方向}: \quad Mg \sin \alpha - f = M a_{cm}
+\end{equation}
+
+\begin{equation}
+    y \text{ 方向}: \quad N - Mg \cos \alpha = 0 \implies N = Mg \cos \alpha
+\end{equation}
+
+根据刚体转动定律 (绕质心转动):
+摩擦力 $f$ 对质心产生力矩 $\tau = f R$.
+\begin{equation}
+    f R = I_C \beta
+\end{equation}
+
+若物体在斜面上做纯滚动 (不打滑), 则接触点的瞬时速度为零. 这意味着质心的线加速度与角加速度满足几何约束关系:
+\begin{equation}
+    a_{cm} = R \beta \implies \beta = \frac{a_{cm}}{R}
+\end{equation}
+
+将约束条件 $\beta = a_{cm}/R$ 代入转动方程:
+\begin{equation}
+    f R = I_C \left( \frac{a_{cm}}{R} \right) \implies f = \frac{I_C}{R^2} a_{cm}
+\end{equation}
+
+将此 $f$ 的表达式代入 $x$ 方向的平动方程:
+\begin{equation}
+    Mg \sin \alpha - \frac{I_C}{R^2} a_{cm} = M a_{cm}
+\end{equation}
+
+整理并解出加速度 $a_{cm}$:
+\begin{equation}
+    a_{cm} \left( M + \frac{I_C}{R^2} \right) = Mg \sin \alpha \implies a_{cm} = \frac{Mg \sin \alpha}{M + \frac{I_C}{R^2}}
+\end{equation}
+
+将 $a_{cm}$ 代回摩擦力表达式, 得到维持纯滚动所需的静摩擦力大小:
+\begin{equation}
+    f = \frac{I_C}{R^2} \cdot \frac{Mg \sin \alpha}{M + \frac{I_C}{R^2}}
+\end{equation}
+
+为了整理成题目要求的形式, 我们将上式分子分母同时除以 $\frac{I_C}{R^2}$:
+\begin{equation}
+    f = \frac{Mg \sin \alpha}{\frac{M R^2}{I_C} + 1}
+\end{equation}
+
+为了保证物体不打滑, 这一所需的静摩擦力 $f$ 不能超过最大静摩擦力 $f_{\text{max}}$.
+\begin{equation}
+    f \leqslant f_{\text{max}} = \mu N
+\end{equation}
+
+代入 $f$ 和 $N$ 的表达式:
+\begin{equation}
+    \frac{Mg \sin \alpha}{\frac{MR^2}{I_C} + 1} \leqslant \mu (Mg \cos \alpha)
+\end{equation}
+
+两边消去 $Mg$ (且 $Mg > 0$), 并除以 $\cos \alpha$ (假设 $\alpha < 90^\circ$, $\cos \alpha > 0$), 利用 $\frac{\sin \alpha}{\cos \alpha} = \tan \alpha$:
+\begin{equation}
+    \frac{\tan \alpha}{\frac{MR^2}{I_C} + 1} \leqslant \mu
+\end{equation}
+
+即:
+\begin{equation}
+    \mu \geqslant \frac{\tan \alpha}{\frac{MR^2}{I_C} + 1}
+\end{equation}
+
+证毕.
+\newline
+
+
+\textbf{TB8.30 一个半径为 $r$ 的均匀小球放在一块水平的板上, 平板以加速度 $a$ 移动. 球与板之间的滑动摩擦系数为 $\mu$, 滚动摩擦系数为 $k$. 试问:}
+
+\textbf{(1)什么情况下球将随板以加速度 $a$ 运动?}
+
+设小球质量为 $m$, 平板向右做加速运动, 加速度为 $a$.
+小球受到以下力的作用:
+\begin{itemize}
+    \item 重力 $mg$, 竖直向下;
+    \item 平板的支持力 $N = mg$, 竖直向上;
+    \item 静摩擦力 $f$. 由于平板向右加速, 小球相对于板有向左滑动的趋势, 故平板对小球的摩擦力 $f$ 水平向右;
+    \item 滚动摩擦力矩 $M_r$. 当小球相对于板有滚动趋势或发生滚动时, 滚动摩擦阻碍该相对运动. 其大小为 $M_r = kN = kmg$ (这里 $k$ 为长度量纲的滚动摩擦系数).
+\end{itemize}
+
+设小球质心加速度为 $a_c$ (向右), 绕质心转动的角加速度为 $\beta$ (逆时针方向, 因为摩擦力 $f$ 对质心产生逆时针力矩, 使球相对于板向后滚动).
+
+动力学方程如下:
+\begin{equation}
+    f = m a_c \quad (\text{质心运动定律})
+\end{equation}
+\begin{equation}
+    f r - M_r = I_c \beta \quad (\text{转动定律})
+\end{equation}
+其中均匀球体的转动惯量 $I_c = \frac{2}{5} m r^2$.
+
+球随板以加速度 $a$ 运动, 此时小球相对于板静止 (无相对滑动, 无相对滚动). 运动学条件为:
+\begin{itemize}
+    \item 质心加速度 $a_c = a$;
+    \item 角加速度 $\beta = 0$.
+\end{itemize}
+
+由质心运动定律 $f = m a$.
+要保持不发生滚动, 摩擦力产生的力矩 $f r$ 必须小于或等于最大滚动摩擦阻力矩 $M_{r, \max} = k m g$:
+\begin{equation}
+    f r \leqslant k m g \implies (m a) r \leqslant k m g \implies a \leqslant \frac{k g}{r}
+\end{equation}
+
+同时, 要保持不发生滑动, 摩擦力 $f$ 必须小于或等于最大静摩擦力 $\mu N$:
+\begin{equation}
+    f \leqslant \mu m g \implies m a \leqslant \mu m g \implies a \leqslant \mu g
+\end{equation}
+
+通常情况下滚动摩擦系数 $k$ 很小 ($k/r \ll \mu$), 因此条件 $a \leqslant \frac{kg}{r}$ 是更严格的限制.
+
+当加速度满足 $a \leqslant \frac{k g}{r}$ 时, 球将随板以加速度 $a$ 运动.
+
+\textbf{(2) 什么情况下球只滚动而不滑动?}
+
+此时小球相对于板做纯滚动.
+纯滚动运动学条件: 接触点的切向加速度与板的加速度相等, 即 $a_c + \beta r = a \implies \beta = \frac{a - a_c}{r}$.
+
+将 $\beta$ 代入转动方程 $f r - k m g = \frac{2}{5} m r^2 \beta$:
+\begin{equation}
+    m a_c r - k m g = \frac{2}{5} m r^2 \left( \frac{a - a_c}{r} \right)
+\end{equation}
+
+整理上式求 $a_c$:
+\begin{equation}
+    m a_c r - k m g = \frac{2}{5} m r a - \frac{2}{5} m r a_c
+\end{equation}
+
+\begin{equation}
+    \frac{7}{5} m r a_c = \frac{2}{5} m r a + k m g
+\end{equation}
+
+\begin{equation}
+    a_c = \frac{2}{7} a + \frac{5 k g}{7 r}
+\end{equation}
+
+该运动状态成立需满足两个条件:
+必须发生滚动, 主动力矩 $fr$ 必须克服滚动摩擦阻力矩 $kmg$.
+\begin{equation}
+    f r > k m g \implies m a_c r > k m g \implies a_c > \frac{k g}{r}
+\end{equation}
+
+代入 $a_c$ 的表达式:
+\begin{equation}
+    \frac{2}{7} a + \frac{5 k g}{7 r} > \frac{k g}{r} \implies \frac{2}{7} a > \frac{2 k g}{7 r} \implies a > \frac{k g}{r}
+\end{equation}
+
+必须不发生滑动, 静摩擦力 $f$ 不超过最大静摩擦力 $\mu m g$.
+\begin{equation}
+    f \leqslant \mu m g \implies m a_c \leqslant \mu m g \implies a_c \leqslant \mu g
+\end{equation}
+
+代入 $a_c$ 的表达式:
+\begin{equation}
+    \frac{2}{7} a + \frac{5 k g}{7 r} \leqslant \mu g
+\end{equation}
+
+\begin{equation}
+    \frac{2}{7} a \leqslant \mu g - \frac{5 k g}{7 r} \implies a \leqslant \frac{7}{2} \mu g - \frac{5 k g}{2 r}
+\end{equation}
+
+当加速度满足 $\frac{k g}{r} < a \leqslant \frac{7}{2} \mu g - \frac{5 k g}{2 r}$ 时, 球相对于板只滚动而不滑动.
+\newline
+
+
+\textbf{TB8.33 镜框贴着墙立在有摩擦的钉子上, 稍受扰动其即向下倾倒, 当到达一定角度 $\theta$, 此镜框将跳离钉子, 求 $\theta$. (提示: 跳离钉子时, 镜框对钉子的压力为零.)}
+
+将镜框视为质量为 $m$ 的刚体. 设镜框对角线长度为 $L$ (对应参考图中的 $l$), 质心位于几何中心, 距离支点 (钉子 $A$) 的距离为 $r = L/2$.
+钉子对镜框的作用力分解为:
+\begin{itemize}
+    \item 垂直向上的支持力 $N$ (即压力对钉子的反作用力);
+    \item 水平方向的摩擦力 $f$.
+\end{itemize}
+镜框绕支点 $A$ 转动, 转动惯量为 $I_A$. 若视镜框动力学特性等效为长为 $L$ 的细杆绕端点转动, 则 $I_A = \frac{1}{3} m L^2$.
+
+设镜框倾角为 $\theta$, 角速度为 $\dot{\theta}$, 角加速度为 $\ddot{\theta}$.
+质心 $C$ 的运动具有切向加速度 $a_t$ 和法向 (向心) 加速度 $a_n$:
+\begin{equation}
+    a_t = \frac{L}{2} \ddot{\theta}, \quad a_n = \frac{L}{2} \dot{\theta}^2
+\end{equation}
+
+在径向 (沿 $AC$ 方向) 和切向 (垂直 $AC$ 方向) 应用牛顿第二定律, 并对支点 $A$ 应用转动定律.
+注意重力 $mg$ 与竖直方向夹角为 $0$, 与径向夹角为 $\theta$.
+$N$ 竖直向上, $f$ 设为水平向右.
+
+径向 (指向 $A$), 重力分量 $(mg \cos\theta)$, 支持力分量 $(-N \cos\theta)$, 摩擦力分量 $(-f \sin\theta)$.
+\begin{equation}
+    (mg - N) \cos\theta - f \sin\theta = m a_n = m \frac{L}{2} \dot{\theta}^2
+\end{equation}
+
+切向 (垂直 $AC$ 向下), 重力分量 $(mg \sin\theta)$, 支持力分量 $(-N \sin\theta)$, 摩擦力分量 $(f \cos\theta)$.
+\begin{equation}
+    (mg - N) \sin\theta + f \cos\theta = m a_t = m \frac{L}{2} \ddot{\theta}
+\end{equation}
+
+转动定律:
+\begin{equation}
+    mg \frac{L}{2} \sin\theta = I_A \ddot{\theta} = \frac{1}{3} m L^2 \ddot{\theta}
+\end{equation}
+
+由方程 (120) 解得角加速度:
+\begin{equation}
+    \ddot{\theta} = \frac{mg(L/2)\sin\theta}{mL^2/3} = \frac{3g}{2L} \sin\theta
+\end{equation}
+
+利用机械能守恒 (或对上式积分 $\ddot{\theta} d\theta = \dot{\theta} d\dot{\theta}$) 求角速度平方:
+\begin{equation}
+    \frac{1}{2} I_A \dot{\theta}^2 = mg \frac{L}{2} (1 - \cos\theta) \implies \dot{\theta}^2 = \frac{3g}{L} (1 - \cos\theta)
+\end{equation}
+
+将 $\ddot{\theta}$ 和 $\dot{\theta}^2$ 代入方程 (118) 和 (119) 以解出 $N$.
+为消去 $f$, 可将 (118) 式乘以 $\cos\theta$, (119) 式乘以 $\sin\theta$, 然后相加:
+\begin{equation}
+    \begin{aligned}
+        & [(mg - N)\cos^2\theta - f\sin\theta\cos\theta] + [(mg - N)\sin^2\theta + f\cos\theta\sin\theta] \\
+        = & m \frac{L}{2} \dot{\theta}^2 \cos\theta + m \frac{L}{2} \ddot{\theta} \sin\theta
+    \end{aligned}
+\end{equation}
+左边化简为 $mg - N$. 右边代入运动学量:
+\begin{equation}
+    \begin{aligned}
+        mg - N &= m \frac{L}{2} \left[ \frac{3g}{L}(1 - \cos\theta) \right] \cos\theta + m \frac{L}{2} \left[ \frac{3g}{2L} \sin\theta \right] \sin\theta \\
+        &= \frac{3}{2} mg (\cos\theta - \cos^2\theta) + \frac{3}{4} mg \sin^2\theta \\
+        &= \frac{3}{4} mg [ 2\cos\theta - 2\cos^2\theta + (1 - \cos^2\theta) ] \\
+        &= \frac{3}{4} mg ( 1 + 2\cos\theta - 3\cos^2\theta )
+    \end{aligned}
+\end{equation}
+
+解出 $N$:
+\begin{equation}
+    \begin{aligned}
+        N &= mg - \frac{3}{4} mg ( 1 + 2\cos\theta - 3\cos^2\theta ) \\
+        &= \frac{mg}{4} [ 4 - 3 - 6\cos\theta + 9\cos^2\theta ] \\
+        &= \frac{mg}{4} ( 3\cos\theta - 1 )^2
+    \end{aligned}
+\end{equation}
+
+跳离钉子时, 镜框对钉子的压力为零, 即 $N=0$:
+\begin{equation}
+    \frac{mg}{4} ( 3\cos\theta - 1 )^2 = 0 \implies 3\cos\theta - 1 = 0
+\end{equation}
+
+解得:
+\begin{equation}
+    \cos\theta = \frac{1}{3}
+\end{equation}
+
+即:
+\begin{equation}
+    \theta = \arccos \frac{1}{3} \approx 70.5^\circ
+\end{equation}
+\newline
+
+
+\textbf{TB8.34 一质量为 $M$、半径为 $R$ 的均质球 1 在水平面上作纯滚动, 球心速度为 $v_0$, 与另一完全相同的静止球 2 发生对心碰撞, 如图T8.34所示. 设碰撞时各接触面间的摩擦均可忽略, 碰撞是弹性的.}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Fig/T8.34.png}
+    \caption{图TB8.34}
+\end{figure}
+
+\textbf{(1) 碰撞后, 各自经过一段时间, 两球开始作纯滚动, 求出此时各球球心的速度;}
+
+设碰撞前瞬间, 球 1 的速度为 $v_1 = v_0$, 角速度为 $\omega_1$. 由于是纯滚动, $\omega_1 = v_0/R$. 球 2 静止, $v_2 = 0, \omega_2 = 0$.
+题目指出“碰撞时各接触面间的摩擦均可忽略”且“碰撞是弹性的”. 这意味着:
+\begin{itemize}
+    \item 碰撞过程中无摩擦冲量, 两球的角速度在碰撞前后瞬间保持不变.
+    \item 两个质量相同的物体发生一维弹性碰撞, 且无外力做功 (水平方向动量守恒, 动能守恒), 它们将\textbf{交换速度}.
+\end{itemize}
+
+设碰撞后瞬间 (状态 $0'$):
+\begin{itemize}
+    \item 球 1: 线速度 $v_1' = v_2 = 0$, 角速度 $\omega_1' = \omega_1 = v_0/R$.
+    \item 球 2: 线速度 $v_2' = v_1 = v_0$, 角速度 $\omega_2' = \omega_2 = 0$.
+\end{itemize}
+
+碰撞后瞬间, 球 1 质心静止 ($v_1' = 0$), 但仍以 $\omega_1' = v_0/R$ 旋转 (向前转).
+此时接触点相对于地面的速度为 $v_{contact} = v_1' + \omega_1' R = v_0$ (向后).
+因此, 地面对球 1 施加向前的滑动摩擦力 $f_1 = \mu Mg$.
+\begin{itemize}
+    \item 质心运动 (加速): $f_1 = M a_1 \implies a_1 = \mu g$.
+    \item 转动 (减速): $-f_1 R = I \beta_1 \implies -\mu Mg R = \frac{2}{5}MR^2 \beta_1 \implies \beta_1 = -\frac{5\mu g}{2R}$.
+\end{itemize}
+
+经过时间 $t_1$, 球 1 达到纯滚动状态, 设最终速度为 $v_{1, \text{final}}$.
+速度方程:
+\begin{equation}
+  \begin{cases}
+      v(t) = 0 + a_1 t = \mu g t \\
+      \omega(t) = \omega_1' + \beta_1 t = \frac{v_0}{R} - \frac{5\mu g}{2R} t
+  \end{cases}
+\end{equation}
+
+纯滚动条件 $v(t) = R \omega(t)$:
+\begin{equation}
+    \mu g t = R \left( \frac{v_0}{R} - \frac{5\mu g}{2R} t \right) = v_0 - \frac{5}{2} \mu g t
+\end{equation}
+
+\begin{equation}
+    \frac{7}{2} \mu g t = v_0 \implies \mu g t = \frac{2}{7} v_0
+\end{equation}
+
+故最终速度:
+\begin{equation}
+    v_{1, \text{final}} = \frac{2}{7} v_0
+\end{equation}
+
+碰撞后瞬间, 球 2 质心速度 $v_2' = v_0$, 但角速度 $\omega_2' = 0$.
+接触点相对于地面的速度为 $v_{contact} = v_0$ (向前).
+因此, 地面对球 2 施加向后的滑动摩擦力 $f_2 = -\mu Mg$.
+\begin{itemize}
+    \item 质心运动 (减速): $-f_2 = M a_2 \implies a_2 = -\mu g$.
+    \item 转动 (加速): $f_2 R = I \beta_2 \implies \mu Mg R = \frac{2}{5}MR^2 \beta_2 \implies \beta_2 = \frac{5\mu g}{2R}$.
+\end{itemize}
+
+经过时间 $t_2$, 球 2 达到纯滚动状态, 设最终速度为 $v_{2, \text{final}}$.
+速度方程:
+\begin{equation}
+  \begin{cases}
+      v(t) = v_0 - \mu g t \\
+      \omega(t) = 0 + \frac{5\mu g}{2R} t
+  \end{cases}
+\end{equation}
+
+纯滚动条件 $v(t) = R \omega(t)$:
+\begin{equation}
+    v_0 - \mu g t = R \left( \frac{5\mu g}{2R} t \right) = \frac{5}{2} \mu g t
+\end{equation}
+
+\begin{equation}
+    v_0 = \frac{7}{2} \mu g t \implies \mu g t = \frac{2}{7} v_0
+\end{equation}
+
+故最终速度:
+\begin{equation}
+    v_{2, \text{final}} = v_0 - \frac{2}{7} v_0 = \frac{5}{7} v_0
+\end{equation}
+\newline
+
+\textbf{(2) 求此过程中系统机械能的损失.}
+
+机械能损失等于系统初始总能量减去最终总能量.
+注意: 碰撞是弹性的, 无能量损失. 能量损失仅发生在碰撞后两球在地面滑动的过程中 (摩擦生热).
+
+仅球 1 运动 (纯滚动).
+\begin{equation}
+    E_{\text{initial}} = \frac{1}{2} M v_0^2 + \frac{1}{2} I \left(\frac{v_0}{R}\right)^2 = \frac{1}{2} M v_0^2 + \frac{1}{2} \left(\frac{2}{5}MR^2\right) \frac{v_0^2}{R^2} = \frac{7}{10} M v_0^2
+\end{equation}
+
+两球均做纯滚动, 速度分别为 $v_1 = \frac{2}{7}v_0$ 和 $v_2 = \frac{5}{7}v_0$.
+对于做纯滚动的球, 动能 $E_k = \frac{1}{2} M v^2 + \frac{1}{2} I \omega^2 = \frac{7}{10} M v^2$.
+\begin{equation}
+    \begin{aligned}
+        E_{\text{final}} &= E_{k1} + E_{k2} \\
+        &= \frac{7}{10} M v_{1, \text{final}}^2 + \frac{7}{10} M v_{2, \text{final}}^2 \\
+        &= \frac{7}{10} M \left[ \left(\frac{2}{7}v_0\right)^2 + \left(\frac{5}{7}v_0\right)^2 \right] \\
+        &= \frac{7}{10} M v_0^2 \left[ \frac{4}{49} + \frac{25}{49} \right] \\
+        &= \frac{7}{10} M v_0^2 \cdot \frac{29}{49} \\
+        &= \frac{29}{70} M v_0^2
+    \end{aligned}
+\end{equation}
+
+机械能损失 $\Delta E$:
+\begin{equation}
+    \Delta E = E_{\text{initial}} - E_{\text{final}} = \frac{7}{10} M v_0^2 - \frac{29}{70} M v_0^2 = \left( \frac{49}{70} - \frac{29}{70} \right) M v_0^2 = \frac{20}{70} M v_0^2 = \frac{2}{7} M v_0^2
+\end{equation}
+\newline
+
+
+\textbf{TB8.36 为了避免高速行驶的汽车在转弯时容易发生的翻车现象, 可在车上安装一高速自旋着的大飞轮.}
+
+\textbf{(1) 试问, 飞轮轴应安装在什么方向上? 飞轮应沿什么方向转动?}
+
+设汽车向左转弯, 角速度为 $\vec{\Omega}$ (竖直向上).
+
+离心力作用于质心, 方向向右 (外侧), 产生一个使车身向右翻倒 (外侧车轮受压, 内侧车轮悬空) 的力矩.
+
+我们需要飞轮产生一个反向的陀螺力矩, 使车身向左倾斜 (压住内侧车轮).
+
+设汽车前进方向为 $+x$, 左侧为 $+y$, 竖直向上为 $+z$.
+向左转弯时 $\vec{\Omega} = \Omega \hat{k}$.
+\begin{itemize}
+    \item 翻车力矩 (向右翻) 沿 $+x$ 方向 (右手螺旋定则).
+    \item 所需的恢复力矩应沿 $-x$ 方向.
+\end{itemize}
+
+飞轮对车身的反作用力矩公式为 $\vec{\tau} = \vec{L}_{\text{fly}} \times \vec{\Omega}$.
+设飞轮角动量为 $\vec{L}_{\text{fly}} = L \hat{j}$ (横向安装).
+$\vec{\tau} = (L \hat{j}) \times (\Omega \hat{k}) = L \Omega \hat{i}$.
+若要得到 $-x$ 方向的力矩, 必须使 $L < 0$, 即角动量指向 $-y$ (右侧).
+
+汽车车轮前进时角动量指向 $+y$ (左侧), 飞轮角动量需指向 $-y$ (右侧), 故两者转动方向相反.
+\newline
+
+
+\textbf{(2) 设汽车的质量为 $M$, 其行驶速度为 $v$, 飞轮是质量为 $m$、半径为 $R$ 的圆盘, 汽车 (包括飞轮) 的质心距地面的高度为 $h$. 为使汽车在绕一曲线行驶时, 两边车轮的负荷均等, 试求飞轮的转速.}
+
+设系统总质量为 $M_{\text{tot}} = M + m$ (假设题目中 $M$ 为车重, $m$ 为飞轮重, 或按题意理解 $M+m$ 为整体质量). 汽车速度为 $v$, 转弯半径为 $\rho$, 质心高度为 $h$.
+
+方法一: 力矩平衡法
+
+汽车做圆周运动, 离心力 $F_c = M_{\text{tot}} \frac{v^2}{\rho} = M_{\text{tot}} v \Omega$.
+离心力作用于质心, 相对于地面接触中心产生的翻倒力矩大小为:
+\begin{equation}
+    \tau_c = F_c \cdot h = (M + m) v \Omega h
+\end{equation}
+
+飞轮转动惯量 $I = \frac{1}{2} m R^2$, 转速为 $\omega$. 角动量 $L = I \omega$.
+飞轮受迫进动 (随车身转弯) 产生的陀螺力矩大小为:
+\begin{equation}
+    \tau_g = L \Omega = (I \omega) \Omega = \frac{1}{2} m R^2 \omega \Omega
+\end{equation}
+
+为使两边车轮负荷均等, 陀螺力矩必须完全抵消离心力矩:
+\begin{equation}
+    \tau_g = \tau_c
+\end{equation}
+
+代入表达式:
+\begin{equation}
+    \frac{1}{2} m R^2 \omega \Omega = (M + m) v \Omega h
+\end{equation}
+
+两边消去转弯角速度 $\Omega$ (说明所需转速与转弯半径无关):
+\begin{equation}
+    \frac{1}{2} m R^2 \omega = (M + m) v h
+\end{equation}
+
+解得飞轮角速度:
+\begin{equation}
+    \omega = \frac{2(M + m) v h}{m R^2}
+\end{equation}
+
+方法二: 角动量守恒法
+
+取地面上位于质心正下方的点为参考点.
+质心平动产生的轨道角动量大小为 $L_{\text{orb}} = M_{\text{tot}} v h$.
+方向: 根据右手定则 $\vec{r} \times \vec{p}$, 竖直向上的位矢叉乘向前的动量, 方向指向左侧 ($+y$).
+
+飞轮的自旋角动量大小为 $L_{\text{spin}} = I \omega = \frac{1}{2} m R^2 \omega$.
+方向: 若要抵消翻车效应, 飞轮转动方向与车轮相反, 角动量指向右侧 ($-y$).
+
+若系统总角动量为零, 则在转弯过程中角动量矢量不发生改变 (始终为 0), 也就无需外力矩 (即不需要地面提供不对称的支持力来产生反翻车力矩).
+\begin{equation}
+    L_{\text{orb}} = L_{\text{spin}}
+\end{equation}
+
+\begin{equation}
+    (M + m) v h = \frac{1}{2} m R^2 \omega
+\end{equation}
+
+解得:
+\begin{equation}
+    \omega = \frac{2(M + m) v h}{m R^2}
+\end{equation}
+
+综上所述, 飞轮的转速应为:
+\begin{equation}
+    \omega = \frac{2(M + m) h v}{m R^2}
+\end{equation}
+\newline
+
+
+\textbf{TB8.37 一半径为 $r$ 的硬币，在桌面上绕半径为 $R$ 的圆滚动，其质心速度为 $v$, 
+如图T8.37所示. 设硬币的滚动为纯滚动， 求其轴线与水平线所成的角 $\theta$ .($\omega \ll 1$, $R \gg r$)}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.35\textwidth]{Fig/T8.37.png}
+    \caption{图T8.37}
+\end{figure}
+
+如图T8.37.1所示, 画出受力分析图. $AB$ 是硬币直径, 质心为 $C$ 点.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.35\textwidth]{Fig/T8.37.1.png}
+    \caption{图T8.37.1}
+\end{figure}
+
+硬币的运动分为自转和公转两部分:
+\begin{itemize}
+    \item 自转:转轴为硬币对称轴 $CO'$, 角速度为 $\omega$.
+    \item 公转:转轴为过 $O'$ 点且平行于 $AB$ 的竖直轴 $z$ 轴, 角速度为 $\Omega$.
+\end{itemize}
+
+由题设硬币的滚动为纯滚动, 满足运动学关系:
+\begin{equation}
+    \omega r = \Omega R = v
+\end{equation}
+
+对硬币进行受力分析, 受到重力 $mg$ (作用于 $C$), 地面支持力 $N$ (作用于 $A$), 静摩擦力 $f$ (作用于 $A$). 利用质心运动定理得:
+\begin{equation}
+    \begin{cases}
+        N = mg \\
+        f = \frac{m v^2}{R_{\text{path}}} = \frac{m v^2}{R - r \sin\theta} \approx \frac{m v^2}{R}
+    \end{cases}
+\end{equation}
+
+取 $O'$ 点 (公转轴上的点) 为参考点计算总力矩 $M$.
+设向内倾倒方向为力矩正方向.
+支持力 $N$ 的力矩: 力臂为 $R$. 
+\begin{equation}
+  M = N R - mg(R - r \sin\theta) - f(r \cos\theta - R \tan\theta)
+\end{equation}
+
+由于 $\theta \ll 1, R \gg r$, 故 $\sin\theta \approx \tan\theta \approx \theta$, $\cos\theta \approx 1$.
+将 $N=mg, f=mv^2/R$ 代入并化简:
+\begin{equation}
+    \begin{aligned}
+        M &= mgR - mgR + mg r \sin\theta - f r \cos\theta + f R \tan\theta \\
+        &= mg r \sin\theta - \frac{mv^2}{R} r \cos\theta + \frac{mv^2}{R} R \tan\theta \\
+        &\approx mg r \sin\theta - \frac{mv^2 r}{R} + mv^2 \sin\theta \\
+        &= mg r \sin\theta + mv^2 \left( \sin\theta - \frac{r}{R} \right)
+    \end{aligned}
+\end{equation}
+
+角动量 $\vec{L}$ 由自转角动量 $\vec{L}_S$ 与公转角动量 $\vec{L}_\Omega$ 合成.
+\begin{itemize}
+    \item 自转角动量 (沿 $CO'$): $L_S = I \omega = \frac{1}{2} m r^2 \frac{R\Omega}{r} = \frac{1}{2} m r R \Omega$.
+    \item 公转角动量 (沿 $z$ 轴): $L_\Omega = \left( \frac{1}{4} m r^2 + m R^2 \right) \Omega \approx m R^2 \Omega$ (忽略小量 $\frac{1}{4}mr^2$).
+\end{itemize}
+
+将总角动量 $\vec{L}$ 在 $z$ 方向 (竖直) 和 $R$ 方向 (径向水平) 分解.
+\begin{itemize}
+    \item $z$ 方向分量不随时间变化.
+    \item $R$ 方向分量 $\vec{L}_R$ 随硬币绕 $z$ 轴旋转.
+\end{itemize}
+
+$\vec{L}_R$ 的大小为:
+\begin{equation}
+    L_R = L_S \cos\theta + L_\Omega \sin\theta
+\end{equation}
+
+代入 $L_S, L_\Omega$ 并取近似:
+\begin{equation}
+    L_R = \left( \frac{1}{2} m r R \Omega \right) \cos\theta + (m R^2 \Omega) \sin\theta \approx \frac{1}{2} m r R \Omega + m R^2 \Omega \sin\theta
+\end{equation}
+
+根据角动量定理, 力矩等于角动量的时间变化率. 对于稳恒进动, 力矩 $M$ 的大小满足 $M = \Omega L_R$.
+即:
+\begin{equation}
+    mg r \sin\theta + mv^2 \left( \sin\theta - \frac{r}{R} \right) = \Omega \left( \frac{1}{2} m r R \Omega + m R^2 \Omega \sin\theta \right)
+\end{equation}
+
+利用 $\Omega = v/R$, 将右边展开:
+\begin{equation}
+    \begin{aligned}
+        \text{右边} &= \frac{v}{R} \left( \frac{1}{2} m r R \frac{v}{R} + m R^2 \frac{v}{R} \sin\theta \right) \\
+        &= \frac{1}{2} \frac{m v^2 r}{R} + m v^2 \sin\theta
+    \end{aligned}
+\end{equation}
+
+建立方程:
+\begin{equation}
+    mg r \sin\theta + mv^2 \sin\theta - \frac{mv^2 r}{R} = \frac{1}{2} \frac{mv^2 r}{R} + m v^2 \sin\theta
+\end{equation}
+
+方程两边消去 $mv^2 \sin\theta$:
+\begin{equation}
+    mg r \sin\theta - \frac{mv^2 r}{R} = \frac{1}{2} \frac{mv^2 r}{R}
+\end{equation}
+
+移项整理:
+\begin{equation}
+    mg r \sin\theta = \frac{3}{2} \frac{mv^2 r}{R}
+\end{equation}
+
+两边消去 $mr$:
+\begin{equation}
+    g \sin\theta = \frac{3 v^2}{2 R}
+\end{equation}
+
+解得:
+\begin{equation}
+    \sin\theta = \frac{3 v^2}{2 R g}
+\end{equation}
+
+即:
+\begin{equation}
+    \theta = \arcsin \left( \frac{3 v^2}{2 R g} \right)
+\end{equation}
+\newline
+
+
+\textbf{TB8.38 盘缘及杆的一端 $O$ 靠在桌面上, 杆与桌面成 $45^\circ$ 角, 如图T8.38所示. 今陀螺以杆的一端 $O$ 为支点, 盘缘靠在桌面上作无滑动滚动, 使杆绕铅垂轴作匀速转动, 角速度为 $\Omega$. 求:  (1) 桌面对盘缘的支承力 $N$; (2) 陀螺的动能.}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.4\textwidth]{Fig/T8.38.png}
+  \caption*{图T8.38}
+\end{figure}
+
+设圆盘质量为 $M$, 半径为 $R$, 杆长为 $l$.
+由几何关系, 杆与水平面成 $45^\circ$ 且垂直于盘面, 则 $l \sin 45^\circ = R \cos 45^\circ$, 故 $l=R$.
+支点 $O$ 到接触点 $P$ 的水平距离 $L_{OP} = \sqrt{l^2 + R^2} = R\sqrt{2}$.
+
+由于 $O$ 点固定, $P$ 点无滑动 (瞬时速度为 0), 因此连线 **$OP$ 为陀螺的瞬时转动轴**.
+设陀螺绕瞬时轴 $OP$ 的总角速度为 $\omega$.
+同时, 陀螺质心 $C$ 绕竖直轴做匀速圆周运动 (进动), 角速度为 $\Omega$, 半径 $r = l \cos 45^\circ = R/\sqrt{2}$.
+计算质心速度 $v_C$:
+\begin{itemize}
+    \item 从总转动 $\omega$ 看 (绕 $OP$ 转): $v_C = \omega \cdot (\text{C到OP的垂距}) = \omega \cdot (R \sin 45^\circ) = \frac{\omega R}{\sqrt{2}}$.
+    \item 从进动 $\Omega$ 看 (绕 $z$ 轴转): $v_C = \Omega \cdot r = \frac{\Omega R}{\sqrt{2}}$.
+\end{itemize}
+
+对比两式可知:
+\begin{equation}
+    \omega = \Omega
+\end{equation}
+即: 陀螺的总角速度矢量沿水平方向 $OP$, 且大小等于 $\Omega$.
+
+为了计算动能和角动量, 我们将总角速度 $\vec{\omega}$ (沿 $OP$) 分解到连体坐标系中:
+\begin{itemize}
+    \item 沿对称轴 (杆) 的分量: $\omega_1 = \omega \cos 45^\circ = \frac{\Omega}{\sqrt{2}}$.
+    \item 垂直对称轴 (沿直径) 的分量: $\omega_2 = \omega \sin 45^\circ = \frac{\Omega}{\sqrt{2}}$.
+\end{itemize}
+
+陀螺绕定点 $O$ 转动, 动能为 $E_k = \frac{1}{2} I_O \omega^2$. 利用分量计算:
+\begin{equation}
+    E_k = \frac{1}{2} I_1 \omega_1^2 + \frac{1}{2} I_2 \omega_2^2
+\end{equation}
+其中:
+\begin{itemize}
+    \item $I_1$ (绕对称轴): $I_1 = \frac{1}{2} M R^2$.
+    \item $I_2$ (绕过 $O$ 点且垂直于杆的轴): 利用平行轴定理, $I_2 = I_{\text{cm}} + M l^2 = \frac{1}{4} M R^2 + M R^2 = \frac{5}{4} M R^2$.
+\end{itemize}
+
+代入计算:
+\begin{equation}
+    \begin{aligned}
+        E_k &= \frac{1}{2} \left( \frac{1}{2} M R^2 \right) \left( \frac{\Omega}{\sqrt{2}} \right)^2 + \frac{1}{2} \left( \frac{5}{4} M R^2 \right) \left( \frac{\Omega}{\sqrt{2}} \right)^2 \\
+        &= \frac{1}{2} \left( \frac{1}{2} M R^2 \right) \frac{\Omega^2}{2} + \frac{1}{2} \left( \frac{5}{4} M R^2 \right) \frac{\Omega^2}{2} \\
+        &= \frac{1}{8} M R^2 \Omega^2 + \frac{5}{16} M R^2 \Omega^2 \\
+        &= \left( \frac{2}{16} + \frac{5}{16} \right) M R^2 \Omega^2 = \frac{7}{16} M R^2 \Omega^2
+    \end{aligned}
+\end{equation}
+
+利用力矩方程: $\vec{M}_{\text{ext}} = \vec{\Omega} \times \vec{L}$.
+首先计算陀螺关于 $O$ 点沿水平瞬时轴 $OP$ 方向的角动量 $L_x$:
+\begin{equation}
+    L_x = I_1 \omega_1 \cos 45^\circ + I_2 \omega_2 \sin 45^\circ
+\end{equation}
+
+代入转动惯量和角速度分量:
+\begin{equation}
+    \begin{aligned}
+        L_x &= \left( \frac{1}{2} M R^2 \right) \left( \frac{\Omega}{\sqrt{2}} \right) \frac{1}{\sqrt{2}} + \left( \frac{5}{4} M R^2 \right) \left( \frac{\Omega}{\sqrt{2}} \right) \frac{1}{\sqrt{2}} \\
+        &= \frac{1}{4} M R^2 \Omega + \frac{5}{8} M R^2 \Omega \\
+        &= \frac{7}{8} M R^2 \Omega
+    \end{aligned}
+\end{equation}
+
+力矩平衡方程 (合外力矩提供进动所需的力矩率 $L_x \Omega$):
+\begin{equation}
+    M_{\text{ext}} = L_x \Omega = \frac{7}{8} M R^2 \Omega^2
+\end{equation}
+
+外力矩来源 (以 $O$ 为支点):
+\begin{itemize}
+    \item 支持力 $N$ (作用在 $P$, 力臂 $R\sqrt{2}$): 产生“抬起”力矩 $N R\sqrt{2}$.
+    \item 重力 $Mg$ (作用在 $C$, 力臂 $R/\sqrt{2}$): 产生“倒下”力矩 $Mg R/\sqrt{2}$.
+\end{itemize}
+
+陀螺进动需要“抬起”方向的净力矩 (修正重力倒下的趋势):
+\begin{equation}
+    N (R\sqrt{2}) - Mg \frac{R}{\sqrt{2}} = \frac{7}{8} M R^2 \Omega^2
+\end{equation}
+
+两边消去 $R$, 解出 $N$:
+\begin{equation}
+    N \sqrt{2} = \frac{Mg}{\sqrt{2}} + \frac{7}{8} M R \Omega^2
+\end{equation}
+
+\begin{equation}
+    N = \frac{1}{2} Mg + \frac{7}{8\sqrt{2}} M R \Omega^2 = \frac{1}{2} Mg + \frac{7\sqrt{2}}{16} M R \Omega^2
+\end{equation}
+\newline
+
+
+\section*{III 补充习题}
+\textbf{1 高为 $h$, 顶角为 $2\alpha$ 的正圆锥在一水平面上绕顶点做纯滚动, 如图 3.1 所示. 已知其几何对称轴以恒定的角速度 $\Omega$ 绕竖直轴转动, 求某时刻圆锥底面上最高点的速度和加速度.}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.25\textwidth]{Fig/3.1.png}
+  \caption*{图 3.1}
+\end{figure}
+
+为便于计算, 建立空间直角坐标系: 取圆锥顶点 $O$ 为原点, 竖直向上为 $z$ 轴. 考察某时刻 $t$, 选取该时刻圆锥与地面的接触母线 $OA'$ 重合于 $x$ 轴正方向, 此时圆锥的对称轴位于 $xz$ 平面内.
+
+根据题目描述, 圆锥在水平面上做纯滚动, 其几何对称轴绕 $z$ 轴以角速度 $\Omega$ 进动.
+设圆锥的瞬时总角速度矢量为 $\vec{\omega}$. 由于圆锥做纯滚动, 接触母线上所有点的瞬时速度为零, 因此圆锥的瞬时转动轴即为接触母线 ($x$ 轴). 故可设:
+\begin{equation}
+    \vec{\omega} = -\omega \hat{i}
+\end{equation}
+
+我们需要先推导 $\omega$ 与已知进动角速度 $\Omega$ 之间的关系. 考察圆锥底面中心 $C$ 的运动:
+已知圆锥高为 $h$, 顶角为 $2\alpha$ (半顶角为 $\alpha$).
+在几何关系中, 质心 $C$ 到顶点 $O$ 的距离为 $h$, 底面半径 $R = h \tan \alpha$. 此时对称轴与水平面的夹角为 $\alpha$.
+因此, 中心 $C$ 的位置矢量为:
+\begin{equation}
+    \vec{r}_C = h \cos \alpha \hat{i} + h \sin \alpha \hat{k}
+\end{equation}
+
+计算 $C$ 点的速度大小 $v_C$ 有两种途径:
+\begin{itemize}
+    \item 途径一 (绕瞬时轴转动): $C$ 点到瞬时转轴 ($x$ 轴) 的垂直距离为 $z_C = h \sin \alpha$. 根据刚体定轴转动公式, 有 $v_C = \omega \cdot (h \sin \alpha)$.
+    \item 途径二 (绕竖直轴进动): 从整体进动角度看, $C$ 点绕 $z$ 轴做圆周运动, 轨道半径为 $x_C = h \cos \alpha$, 角速度为 $\Omega$. 故有 $v_C = -\Omega \cdot (h \cos \alpha)$.
+\end{itemize}
+
+联立上述两式, 得到自转与进动的关系:
+\begin{equation}
+    \omega h \sin \alpha = \Omega h \cos \alpha \implies \omega = \Omega \cot \alpha
+\end{equation}
+
+即瞬时总角速度矢量为:
+\begin{equation}
+    \vec{\omega} = -\Omega \cot \alpha \hat{i}
+\end{equation}
+
+圆锥底面是一个平面圆, 在该瞬间垂直于对称轴 $OC$. 底面上最高点 $P$ 位于 $xz$ 平面内.
+相对于中心 $C$, 点 $P$ 位于``上方'', 即沿垂直于对称轴方向且在 $xz$ 平面内偏转 $\pi/2$.
+由几何关系易得 $P$ 点在固定坐标系下的坐标:
+\begin{equation}
+    \begin{aligned}
+        x_P &= x_C - R \sin \alpha = h \cos \alpha - (h \tan \alpha) \sin \alpha = h \frac{\cos^2 \alpha - \sin^2 \alpha}{\cos \alpha} = h \frac{\cos 2\alpha}{\cos \alpha} \\
+        y_P &= 0 \\
+        z_P &= z_C + R \cos \alpha = h \sin \alpha + (h \tan \alpha) \cos \alpha = 2 h \sin \alpha
+    \end{aligned}
+\end{equation}
+
+故 $P$ 点的位置矢量为:
+\begin{equation}
+    \vec{r}_P = h \frac{\cos 2\alpha}{\cos \alpha} \hat{i} + 2 h \sin \alpha \hat{k}
+\end{equation}
+
+利用刚体速度公式 $\vec{v}_P = \vec{\omega} \times \vec{r}_P$:
+\begin{equation}
+    \begin{aligned}
+        \vec{v}_P &= (\Omega \cot \alpha \hat{i}) \times (x_P \hat{i} + z_P \hat{k}) \\
+        &= (\Omega \cot \alpha) z_P \hat{j} \\
+        &= (\Omega \cot \alpha) (2 h \sin \alpha) \hat{j} \\
+        &= 2 \Omega h \cos \alpha \hat{j}
+    \end{aligned}
+\end{equation}
+
+最高点 $P$ 的速度大小为 $2 \Omega h \cos \alpha$, 方向水平且垂直于 $OA$ 连线 (沿 $-y$ 方向).
+
+根据刚体加速度的一般公式 (取 $O$ 点为基点, $\vec{a}_O = \vec{0}$):
+\begin{equation}
+    \vec{a}_P = \vec{\alpha}_{\text{ang}} \times \vec{r}_P + \vec{\omega} \times (\vec{\omega} \times \vec{r}_P)
+\end{equation}
+
+首先计算角加速度 $\vec{\alpha}_{\text{ang}}$. 在惯性系中, 瞬时角速度矢量 $\vec{\omega}$ 的大小恒定, 但方向随圆锥进动绕 $z$ 轴旋转. 故角加速度为:
+\begin{equation}
+    \vec{\alpha}_{\text{ang}} = \frac{d\vec{\omega}}{dt} = \vec{\Omega}_{\text{prec}} \times \vec{\omega} = (\Omega \hat{k}) \times (-\Omega \cot \alpha \hat{i}) = -\Omega^2 \cot \alpha \hat{j}
+\end{equation}
+
+分项计算加速度, 第一项 (角加速度项):
+\begin{equation}
+    \begin{aligned}
+        \vec{\alpha}_{\text{ang}} \times \vec{r}_P &= (\Omega^2 \cot \alpha \hat{j}) \times (x_P \hat{i} + z_P \hat{k}) \\
+        &= -\Omega^2 \cot \alpha ( -x_P \hat{k} + z_P \hat{i} )
+    \end{aligned}
+\end{equation}
+
+第二项 (向心加速度项):
+\begin{equation}
+    \begin{aligned}
+        \vec{\omega} \times (\vec{\omega} \times \vec{r}_P) &= \vec{\omega} \times \vec{v}_P \\
+        &= (- \Omega \cot \alpha \hat{i}) \times (2 \Omega h \cos \alpha \hat{j}) \\
+        &= - 2 \Omega^2 h \frac{\cos^2 \alpha}{\sin \alpha} \hat{k}
+    \end{aligned}
+\end{equation}
+
+合并同类项得到最终加速度矢量 $\vec{a}_P$ 的分量, $x$ 分量 (径向):
+\begin{equation}
+    a_x =- \Omega^2 \cot \alpha \cdot z_P =- \Omega^2 \frac{\cos \alpha}{\sin \alpha} (2 h \sin \alpha) =- 2 \Omega^2 h \cos \alpha
+\end{equation}
+
+$z$ 分量 (竖直):
+\begin{equation}
+    \begin{aligned}
+        a_z &= \Omega^2 \cot \alpha \cdot x_P - 2 \Omega^2 h \frac{\cos^2 \alpha}{\sin \alpha} \\
+        &= \Omega^2 \frac{\cos \alpha}{\sin \alpha} \left( h \frac{\cos 2\alpha}{\cos \alpha} \right) - 2 \Omega^2 h \frac{\cos^2 \alpha}{\sin \alpha} \\
+        &= -\frac{\Omega^2 h}{\sin \alpha} 
+    \end{aligned}
+\end{equation}
+
+综上所述, 圆锥底面上最高点的加速度为:
+\begin{equation}
+    \vec{a}_P = -2 \Omega^2 h \cos \alpha \hat{i} - \frac{\Omega^2 h }{\sin \alpha} \hat{k}
+\end{equation}
+\newline
+
+
+\textbf{2 打击中心 (center of percussion): 你希望在用球棒击打棒球时 (或打网球, 高尔夫球等), 握球棒的手不受到冲击力. 假设球棒长度为 $L$, 质量 $m$ 均匀分布, 如图 3.2 所示, 应该用球棒的何处击球? 该击中点也因此称为 Sweet spot.}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.25\textwidth]{Fig/3.2.png}
+  \caption*{图 3.2}
+\end{figure}
+
+我们将球棒建模为一根质量为 $m$, 长度为 $L$ 的均匀细棒. 握棒的手视为转轴中心 $O$, 击球过程视为一个瞬时的冲量作用过程.
+
+设球棒原本静止 (或以角速度 $-\omega$ 运动), 击球瞬间, 球棒受到两个主要的脉冲力 (Impulsive force):
+\begin{itemize}
+  \item 在击球点 $P$ 处受到的外部冲量 $F \Delta t$, 记为 $J$. 设 $P$ 点距离转轴 $O$ 的距离为 $x$.
+  \item 在转轴 $O$ 处 (即手部) 可能受到的反作用冲量 $R \Delta t$, 记为 $J_{\text{pivot}}$.
+\end{itemize}
+
+为了使手不受到冲击力 (即“不麻手”), 必须满足条件:
+\begin{equation}
+    J_{\text{pivot}} = 0
+\end{equation}
+
+设击球后球棒获得了瞬时角速度变化量 $\Delta \omega$, 质心 $C$ 获得了瞬时线速度变化量 $\Delta v_C$.
+
+对质心应用动量定理(在水平方向):
+\begin{equation}
+    J + J_{\text{pivot}} = m \Delta v_C
+\end{equation}
+
+代入 $J_{\text{pivot}} = 0$ 的条件, 得:
+\begin{equation}
+    J = m \Delta v_C
+\end{equation}
+
+对转轴 $O$ 应用角动量定理:
+\begin{equation}
+    J \cdot x = I_O \Delta \omega
+\end{equation}
+其中 $I_O$ 是球棒绕端点 $O$ 的转动惯量.
+
+球棒做定轴转动, 质心 $C$ 的速度变化量与角速度变化量之间存在运动学关系. 对于均匀球棒, 质心位于 $L/2$ 处, 故:
+\begin{equation}
+    \Delta v_C = r_C \Delta \omega = \frac{L}{2} \Delta \omega
+\end{equation}
+
+将运动学约束代入动量定理方程:
+\begin{equation}
+    J = m \left( \frac{L}{2} \Delta \omega \right)
+\end{equation}
+
+将此 $J$ 的表达式代入角动量定理方程:
+\begin{equation}
+    \left( m \frac{L}{2} \Delta \omega \right) \cdot x = I_O \Delta \omega
+\end{equation}
+
+消去 $\Delta \omega$ ($ \neq 0 $), 解得 $x$:
+\begin{equation}
+    x = \frac{I_O}{m (L/2)}
+\end{equation}
+
+对于质量均匀分布的细棒, 绕端点转动的转动惯量为 $I_O = \frac{1}{3} m L^2$. 代入上式:
+\begin{equation}
+    x = \frac{\frac{1}{3} m L^2}{m \frac{L}{2}} = \frac{2}{3} L
+\end{equation}
+
+该点 $P$ 在力学上被称为打击中心. 当力作用于此点时, 产生的平动加速度需要的力与产生的转动加速度需要的力矩恰好匹配, 使得转轴处所需的约束力为零. 对于均匀细棒, 这个位置位于全长的 $2/3$ 处.
+\newline
+
+
+\end{document}
